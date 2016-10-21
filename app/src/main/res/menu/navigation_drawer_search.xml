@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:title="@string/drawer_search_title">
+            <menu>
+                <item
+                    android:checked="true"
+                    android:id="@+id/classTable"
+                    android:icon="@drawable/table"
+                    android:title="@string/drawer_search_class"/>
+                <item
+                    android:id="@+id/examTime"
+                    android:icon="@drawable/book_multiple"
+                    android:title="@string/drawer_search_exam"/>
+                <item
+                    android:id="@+id/scores"
+                    android:icon="@drawable/code_string"
+                    android:title="@string/drawer_search_score"/>
+            </menu>
+        </item>
+    </group>
+
+</menu>

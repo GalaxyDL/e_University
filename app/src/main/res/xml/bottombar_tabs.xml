@@ -1,0 +1,14 @@
+<tabs>
+    <tab
+        id="@+id/search"
+        icon="@drawable/magnify"
+        title="@string/buttons_navigation_search" />
+    <tab
+        id="@+id/choose"
+        icon="@drawable/book_multiple"
+        title="@string/buttons_navigation_choose" />
+    <tab
+        id="@+id/me"
+        icon="@drawable/account"
+        title="@string/buttons_navigation_me" />
+</tabs>

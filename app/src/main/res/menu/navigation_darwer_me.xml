@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:title="@string/drawer_me_title">
+            <menu>
+                <item
+                    android:checked="true"
+                    android:id="@+id/account"
+                    android:icon="@drawable/account"
+                    android:title="@string/drawer_me_account"/>
+                <item
+                    android:id="@+id/login"
+                    android:icon="@drawable/refresh"
+                    android:title="@string/drawer_me_login"/>
+            </menu>
+        </item>
+    </group>
+
+</menu>

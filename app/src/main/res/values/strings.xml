@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">E客校园</string>
+
+    <string name="login_tip">请输入学号、密码和验证码：</string>
+    <string name="login_id">学号</string>
+    <string name="login_password">密码</string>
+    <string name="login_code">验证码</string>
+    <string name="login_submit">登录</string>
+    <string name="codeTip">点击左侧更新验证码~</string>
+
+    <string name="buttons_navigation_search">查询</string>
+    <string name="buttons_navigation_choose">选课</string>
+    <string name="buttons_navigation_me">个人</string>
+
+    <string name="drawer_search_title">查询</string>
+    <string name="drawer_search_class">课程表</string>
+    <string name="drawer_search_exam">考试时间</string>
+    <string name="drawer_search_score">考试成绩</string>
+
+    <string name="drawer_choose_title">选课</string>
+    <string name="drawer_choose_public">公选课</string>
+    <string name="drawer_choose_recommend">推荐选课</string>
+    <string name="drawer_choose_sports">体育课</string>
+
+    <string name="drawer_me_title">个人</string>
+    <string name="drawer_me_account">个人信息</string>
+    <string name="drawer_me_login">更新数据</string>
+
+    <string name="choose_not_time">现在还没开放选课呢qwq</string>
+
+    <string name="score_title">课程名</string>
+    <string name="score_number">成绩</string>
+    <string name="score_credit">学分</string>
+
+</resources>

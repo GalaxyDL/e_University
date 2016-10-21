@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:title="@string/drawer_choose_title">
+            <menu>
+                <item
+                    android:checked="true"
+                    android:id="@+id/recommendClass"
+                    android:icon="@drawable/table"
+                    android:title="@string/drawer_choose_recommend"/>
+                <item
+                    android:id="@+id/sportsClass"
+                    android:icon="@drawable/book_multiple"
+                    android:title="@string/drawer_choose_sports"/>
+                <item
+                    android:id="@+id/publicClass"
+                    android:icon="@drawable/code_string"
+                    android:title="@string/drawer_choose_public"/>
+            </menu>
+        </item>
+    </group>
+
+</menu>
