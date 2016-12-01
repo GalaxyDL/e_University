@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Created by wangh on 2016/8/22.
  */
-public class PublicClassFragment extends Fragment {
+public class PublicClassFragment extends ChoosingClassesFragment{
     private DataManager dataManager = new DataManager(getContext());
     private ArrayList<ClassForChoose> classForChooses;
 
@@ -28,26 +28,28 @@ public class PublicClassFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewOfChoose);
         adapter = new ClassForChooseAdapter(getContext());
 
-        dataManager.updatePublicClasses();
-        synchronized (this){
-            while (!dataManager.isClassGot()){
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        classForChooses=dataManager.getClassForChooses();
+        dataManager.updatePublicClasses(this);
+
+
+//        classForChooses=dataManager.getClassForChooses();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        for(ClassForChoose classForChoose:classForChooses){
-            adapter.addClass(classForChoose);
-        }
+//        for(ClassForChoose classForChoose:classForChooses){
+//            adapter.addClass(classForChoose);
+//        }
 
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void update() {
+        classForChooses=dataManager.getClassForChooses();
+        for(ClassForChoose classForChoose:classForChooses){
+            adapter.addClass(classForChoose);
+        }
+        recyclerView.refreshDrawableState();
     }
 }

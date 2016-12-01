@@ -7,6 +7,7 @@ import android.content.SearchRecentSuggestionsProvider;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import org.jsoup.nodes.Document;
@@ -251,6 +252,7 @@ public class DataManager {
     private SharedPreferences sharedPreferences;
     private DatabaseManager databaseManager;
     private Context context;
+    private ChoosingClassesFragment targetFrament;
     private Date date;
     private int classCount;
     private ArrayList<String> classTitles;
@@ -258,6 +260,7 @@ public class DataManager {
     private ArrayList<ClassForChoose> classForChooses;
     private boolean updated;
     private boolean classGot;
+    private ClassesCurrentNumberUpdater currentNumberUpdater;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -284,7 +287,12 @@ public class DataManager {
         }
     };
 
+    public interface updateListener{
+        void update();
+    }
+
     public DataManager(Context context) {
+        currentNumberUpdater = new ClassesCurrentNumberUpdater();
         this.context = context;
     }
 
@@ -310,19 +318,20 @@ public class DataManager {
         element = doc.getElementById("zydm");
 //        Log.d("doUpdateInfo",MAJOR.get(element.val()));
         editor.putString("major",MAJOR.get(element.val()));
-        editor.commit();
+        editor.apply();
     }
 
-    public void updatePublicClasses() {
+    public void updatePublicClasses(ChoosingClassesFragment fragment) {
         Log.d("get public classes", "start");
         updated = false;
+        targetFrament=fragment;
         new Thread(new Runnable() {
             @Override
             public void run() {
                 HttpRequester httpRequester = new HttpRequester();
                 httpRequester.setChoose(true);
                 Message msg = new Message();
-                msg.what = 3;
+                msg.what = PUBLIC_CLASSES;
                 httpRequester.get("http://xk.tjut.edu.cn/xsxk/index.xk", "http://xk.tjut.edu.cn/xsxk/logout.xk", false);
                 httpRequester.get("http://xk.tjut.edu.cn/xsxk/main.xk", "http://xk.tjut.edu.cn/xsxk/", false);
                 httpRequester.get("http://xk.tjut.edu.cn/xsxk/loadData.xk?method=getXsLoginCnt", "http://xk.tjut.edu.cn/xsxk/main.xk", true);
@@ -331,10 +340,10 @@ public class DataManager {
                 httpRequester.get("http://xk.tjut.edu.cn/xsxk/xkjs.xk?pyfaid=01777&jxqdm=1&data-frameid=main&data-timer=2000&data-proxy=proxy.xk", "http://xk.tjut.edu.cn/xsxk/index.xk", false);
                 msg.obj = httpRequester.get("http://xk.tjut.edu.cn/xsxk/qxgxk.xk", "http://xk.tjut.edu.cn/xsxk/xkjs.xk?pyfaid=01482&jxqdm=1&data-frameid=main&data-timer=2000&data-proxy=proxy.xk", true);
                 handler.sendMessage(msg);
-                msg = new Message();
-                msg.what = PUBLIC_CLASSES;
-                msg.obj = httpRequester.getString("http://xk.tjut.edu.cn/xsxk/loadData.xk?method=gerJxbXkrs");
-                handler.sendMessage(msg);
+//                msg = new Message();
+//                msg.what = PUBLIC_CLASSES;
+//                msg.obj = httpRequester.getString("http://xk.tjut.edu.cn/xsxk/loadData.xk?method=gerJxbXkrs");
+//                handler.sendMessage(msg);
             }
         }).start();
     }
@@ -414,7 +423,7 @@ public class DataManager {
         }
 //        updated=true;
 //        notifyAll();
-        //updateCurrentNumber();
+        currentNumberUpdater.update();
     }
 
     public void updateCurrentNumber() {
@@ -445,7 +454,7 @@ public class DataManager {
             }
         }
         classGot = true;
-        notifyAll();
+        targetFrament.update();
     }
 
     public void updateExam() {
@@ -603,7 +612,7 @@ public class DataManager {
             line.child(0).remove();
             offset = 0;
             for (int j = 1; j <= 7; j++) {
-                if (haveClass[j - 1][i - 1] == true) {
+                if (haveClass[j - 1][i - 1]) {
                     offset++;
                     continue;
                 }
@@ -689,6 +698,13 @@ public class DataManager {
             }
             Log.d("got class", aClassItem.toString());
             databaseManager.addClass(aClassItem);
+        }
+    }
+
+    private class ClassesCurrentNumberUpdater implements updateListener{
+        @Override
+        public void update() {
+            updateCurrentNumber();
         }
     }
 

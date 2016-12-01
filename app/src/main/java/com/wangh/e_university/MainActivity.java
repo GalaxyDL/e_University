@@ -135,8 +135,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.choose:
                         navigationView.getMenu().clear();
                         navigationView.inflateMenu(R.menu.navigation_drawer_choose);
-//                        changeToChooseLogin();
-                        changeToChooseNotTime();
+                        changeToChooseLogin();
+//                        changeToChooseNotTime();
                         break;
                     case R.id.me:
                         navigationView.getMenu().clear();
@@ -242,6 +242,18 @@ public class MainActivity extends AppCompatActivity {
                         navigationView.getMenu().findItem(R.id.classTable).setChecked(false);
                         changeToScore();
                         break;
+                    case R.id.sportsClass:
+                        navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.recommendClass).setChecked(false);
+                        break;
+                    case R.id.publicClass:
+                        navigationView.getMenu().findItem(R.id.sportsClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.recommendClass).setChecked(false);
+                        break;
+                    case R.id.recommendClass:
+                        navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.sportsClass).setChecked(false);
+                        break;
                     case R.id.account:
                         navigationView.getMenu().findItem(R.id.login).setChecked(false);
                         changeToMe();
@@ -283,7 +295,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }).start();
         }
-
     }
 
 }
