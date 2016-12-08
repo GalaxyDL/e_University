@@ -69,7 +69,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/login_code"
-                            android:inputType="textPassword"
+                            android:inputType="text"
                             android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -89,6 +89,12 @@
                         android:layout_gravity="bottom"
                         android:text="@string/codeTip"/>
                 </LinearLayout>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:text="@string/remember_pas_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rememberPassword"/>
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/submitLogin"

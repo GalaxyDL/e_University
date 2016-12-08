@@ -14,12 +14,14 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import org.jsoup.nodes.Document;
 
@@ -31,6 +33,7 @@ public class LoginFragment extends Fragment {
     private TextInputLayout username;
     private TextInputLayout password;
     private TextInputLayout inputCodes;
+    private SwitchCompat rememberPas;
     private ImageView codes;
     private final String codesUrl = "http://my.tjut.edu.cn/captchaGenerate.portal";
     private Document doc;
@@ -69,6 +72,12 @@ public class LoginFragment extends Fragment {
                             editor.putString("id", usr);
                             editor.putString("name", name);
                             editor.putBoolean("isLogin", true);
+                            if(rememberPas.isChecked()){
+                                editor.putBoolean("remPas",true);
+                                editor.putString("pas",pas);
+                            }else{
+                                editor.putBoolean("remPas",false);
+                            }
                             notifyAll();
                             editor.commit();
                             Snackbar.make(coordinatorLayout, "登录成功！" + name+"。正在更新数据", Snackbar.LENGTH_SHORT).show();
@@ -97,6 +106,7 @@ public class LoginFragment extends Fragment {
         username = (TextInputLayout) view.findViewById(R.id.id);
         password = (TextInputLayout) view.findViewById(R.id.password);
         inputCodes = (TextInputLayout) view.findViewById(R.id.inputCodes);
+        rememberPas = (SwitchCompat) view.findViewById(R.id.rememberPassword);
         codes = (ImageView) view.findViewById(R.id.codes);
         httpRequester.setChoose(false);
         getUrlImage();
@@ -111,6 +121,13 @@ public class LoginFragment extends Fragment {
         });
 
         sharedPreferences = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
+        if(sharedPreferences.getBoolean("isLogin",false)){
+            username.getEditText().setText(sharedPreferences.getString("id",""));
+            if(sharedPreferences.getBoolean("remPas",false)){
+                password.getEditText().setText(sharedPreferences.getString("pas",""));
+                rememberPas.setChecked(true);
+            }
+        }
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

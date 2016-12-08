@@ -14,6 +14,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class LoginChooseFragment extends Fragment {
     private TextInputLayout username;
     private TextInputLayout password;
     private TextInputLayout inputCodes;
+    private SwitchCompat rememberPas;
     private ImageView codes;
     private final String codesUrl = "http://xk.tjut.edu.cn/xsxk/servlet/ImageServlet";
     private Document doc;
@@ -80,6 +82,7 @@ public class LoginChooseFragment extends Fragment {
         username = (TextInputLayout) view.findViewById(R.id.id);
         password = (TextInputLayout) view.findViewById(R.id.password);
         inputCodes = (TextInputLayout) view.findViewById(R.id.inputCodes);
+        rememberPas = (SwitchCompat) view.findViewById(R.id.rememberPassword);
         codes = (ImageView) view.findViewById(R.id.codes);
         httpRequester.setChoose(true);
         getUrlImage();
@@ -87,6 +90,14 @@ public class LoginChooseFragment extends Fragment {
         fragmentManager=getFragmentManager();
 
         coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinatorLayout);
+        sharedPreferences = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
+        if(sharedPreferences.getBoolean("isLogin",false)){
+            username.getEditText().setText(sharedPreferences.getString("id",""));
+            if(sharedPreferences.getBoolean("remPas",false)){
+                password.getEditText().setText(sharedPreferences.getString("pas",""));
+                rememberPas.setChecked(true);
+            }
+        }
 
         codes.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
+
 public class DataManager {
     private final static int CLASS_TABLE = 0;
     private final static int SCORE = 1;
@@ -374,6 +376,14 @@ public class DataManager {
 //                Log.d("class for choose",line.toString());
 //                Log.d("line length",lines.length+"");
                 if (lines.length == 51) {
+                    Log.d("lines", line.toString());
+                    Log.d("lines", lines[1]);
+                    Log.d("lines", lines[3]);
+                    Log.d("lines", lines[5]);
+                    Log.d("lines", lines[29]);
+                    Log.d("lines", lines[33]);
+                    Log.d("lines", lines[45]);
+
                     classCount++;
                     classForChoose = new ClassForChoose();
                     classForChoose.setIdForChoose(lines[3]);
@@ -397,6 +407,10 @@ public class DataManager {
                     classForChoose.setCategory(CLASS_CATEGORY.get(lines[45]));
                     classForChooses.add(classForChoose);
                 } else {
+                    Log.d("lines", line.toString());
+                    Log.d("lines", lines[7]);
+                    Log.d("lines", lines[9]);
+                    Log.d("lines", lines[11]);
                     classForChoose = classForChooses.get(classCount - 1);
                     classForChoose.getWeek().add(lines[5]);
                     try {
@@ -416,6 +430,7 @@ public class DataManager {
                     }
                     classForChoose.getLocation().add(lines[13]);
                 }
+                Log.d("lines", classForChooses.get(classCount-1).toString());
             }
         }
         for (int i = 0; i < classForChooses.size(); i++) {
@@ -447,13 +462,13 @@ public class DataManager {
         for (int i = 0; i < classForChooses.size(); i++) {
             classForChoose = classForChooses.get(i);
             for (int j = 0; j < lines.length; i++) {
+                Log.d("number got",lines[j].split(":")[0]);
                 if (classForChoose.getIdForChoose().equals(lines[j].split(":")[0])) {
                     classForChoose.setCurrentNumber(Integer.parseInt(lines[j].split(":")[1]));
                     Log.d("number got", classForChoose.getCurrentNumber() + "");
                 }
             }
         }
-        classGot = true;
         targetFrament.update();
     }
 
@@ -541,14 +556,13 @@ public class DataManager {
         Element table = doc.getElementsByTag("tbody").get(7);
         ScoreItem aScoreItem;
 
-        Log.d("got average credit", doc.getElementsByClass("ui_alert").first().child(0).text());
-        databaseManager.updateAverageCredit(doc.getElementsByClass("ui_alert").first().child(0).text());
-
         table.child(0).remove();
 //        Log.d("score",table.toString());
         if (table.child(0).child(0).text().equals("暂无记录")) {
             Log.d("doUpdateScore", "no score");
         } else while (!table.children().isEmpty()) {
+            Log.d("got average credit", doc.getElementsByClass("ui_alert").first().child(0).text());
+            databaseManager.updateAverageCredit(doc.getElementsByClass("ui_alert").first().child(0).text());
             aScoreItem = new ScoreItem();
             aScoreItem.setTitle(table.child(0).child(3).text());
             aScoreItem.setCredit(Double.parseDouble(table.child(0).child(7).text().replace("\n", "").replace(" ", "")));
@@ -566,7 +580,6 @@ public class DataManager {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (this) {
                     HttpRequester httpRequester = new HttpRequester();
                     Message msg = new Message();
                     date = new Date();
@@ -580,7 +593,6 @@ public class DataManager {
                     msg.obj = httpRequester.get("http://ssfw.tjut.edu.cn/ssfw/pkgl/kcbxx/4/" + urlContent + ".do");
 //                    msg.obj = httpRequester.get("http://ssfw.tjut.edu.cn/ssfw/pkgl/kcbxx/4/2016-2017-1.do");
                     handler.sendMessage(msg);
-                }
             }
         }).start();
     }
