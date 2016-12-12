@@ -18,7 +18,7 @@ public class ExamItem {
     public ExamItem(String title, String teacher, String time, String location, String modus, int credit) {
         this.title = title;
         this.teacher = teacher;
-        this.time = time;
+        this.time = time.replaceAll("\\s","\n");
         this.location = location;
         this.modus = modus;
         this.credit = credit;

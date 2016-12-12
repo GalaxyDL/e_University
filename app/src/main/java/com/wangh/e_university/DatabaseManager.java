@@ -23,6 +23,7 @@ public class DatabaseManager {
 
     public DatabaseManager(Context context) {
         databaseHelper = new DatabaseHelper(context);
+        closeDB();
         db = databaseHelper.getWritableDatabase();
     }
 
@@ -183,7 +184,9 @@ public class DatabaseManager {
     }
 
     public void closeDB() {
-        db.close();
+        if(db!=null){
+            db.close();
+        }
     }
 
 }

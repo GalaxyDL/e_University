@@ -20,5 +20,12 @@
             </menu>
         </item>
     </group>
+    <group>
+        <item
+            android:title="@string/drawer_info"
+            android:id="@+id/infoMeSearch"
+            android:icon="@drawable/information"
+            />
+    </group>
 
 </menu>

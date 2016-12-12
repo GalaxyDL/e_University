@@ -27,6 +27,8 @@
     <string name="drawer_me_account">个人信息</string>
     <string name="drawer_me_login">更新数据</string>
 
+    <string name="drawer_info">关于</string>
+
     <string name="choose_not_time">现在还没开放选课呢qwq</string>
 
     <string name="score_title">课程名</string>

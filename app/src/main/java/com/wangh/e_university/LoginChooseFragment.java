@@ -66,6 +66,7 @@ public class LoginChooseFragment extends Fragment {
 //                        DataManager dataManager=new DataManager(getContext());
 //                        dataManager.getPublicClasses();
                         changeToPublicClass();
+
                     } else {
                         Snackbar.make(coordinatorLayout, "登录失败了,看看学号、密码和验证码是否正确QwQ", Snackbar.LENGTH_SHORT).show();
                     }

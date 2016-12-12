@@ -20,16 +20,16 @@ import android.widget.TextView;
  * Created by wangh on 2016/8/5.
  */
 public class MeFragment extends Fragment {
-    InfoAdapter adapter;
-    RecyclerView recyclerView;
-    FloatingActionButton floatingActionButton;
-    TextView name;
-    SharedPreferences sharedPreferences;
+    private InfoAdapter adapter;
+    private RecyclerView recyclerView;
+    private FloatingActionButton floatingActionButton;
+    private TextView name;
+    private SharedPreferences sharedPreferences;
 
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
 
-    LoginFragment loginFragment;
+    private LoginFragment loginFragment;
 
     @Nullable
     @Override

@@ -1,5 +1,6 @@
 package com.wangh.e_university;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -135,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.choose:
                         navigationView.getMenu().clear();
                         navigationView.inflateMenu(R.menu.navigation_drawer_choose);
-                        changeToChooseLogin();
-//                        changeToChooseNotTime();
+//                        changeToChooseLogin();
+                        changeToChooseNotTime();
                         break;
                     case R.id.me:
                         navigationView.getMenu().clear();
@@ -221,6 +222,11 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    private void startInfo(){
+        Intent intent = new Intent(MainActivity.this,InfoActivity.class);
+        startActivity(intent);
+    }
+
     private void setDrawer() {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -261,6 +267,18 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.login:
                         navigationView.getMenu().findItem(R.id.account).setChecked(false);
                         changeToLogin();
+                        break;
+                    case R.id.infoChoose:
+                        navigationView.getMenu().findItem(R.id.infoChoose).setChecked(false);
+                        startInfo();
+                        break;
+                    case R.id.infoMe:
+                        navigationView.getMenu().findItem(R.id.infoMe).setChecked(false);
+                        startInfo();
+                        break;
+                    case R.id.infoMeSearch:
+                        navigationView.getMenu().findItem(R.id.infoMeSearch).setChecked(false);
+                        startInfo();
                         break;
                 }
                 drawerLayout.closeDrawers();

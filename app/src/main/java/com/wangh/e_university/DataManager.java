@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 
 public class DataManager {
     private final static int CLASS_TABLE = 0;
@@ -461,8 +460,8 @@ public class DataManager {
         String lines[] = date.split("\\{")[2].replace("}", "").replace("\\", "").replace("\"", "").split(",");
         for (int i = 0; i < classForChooses.size(); i++) {
             classForChoose = classForChooses.get(i);
-            for (int j = 0; j < lines.length; i++) {
-                Log.d("number got",lines[j].split(":")[0]);
+            for (int j = 0; j < lines.length; j++) {
+                //Log.d("number got",lines[j].split(":")[0]);
                 if (classForChoose.getIdForChoose().equals(lines[j].split(":")[0])) {
                     classForChoose.setCurrentNumber(Integer.parseInt(lines[j].split(":")[1]));
                     Log.d("number got", classForChoose.getCurrentNumber() + "");
@@ -552,25 +551,28 @@ public class DataManager {
 
     private void doUpdateScore(Document doc) {
         databaseManager = new DatabaseManager(context);
-        databaseManager.deleteAllScore();
-        Element table = doc.getElementsByTag("tbody").get(7);
-        ScoreItem aScoreItem;
+        if(!doc.title().equals("500 - 系统内部错误")){
+            databaseManager.deleteAllScore();
+            Element table = doc.getElementsByTag("tbody").get(7);
+            ScoreItem aScoreItem;
 
-        table.child(0).remove();
-//        Log.d("score",table.toString());
-        if (table.child(0).child(0).text().equals("暂无记录")) {
-            Log.d("doUpdateScore", "no score");
-        } else while (!table.children().isEmpty()) {
-            Log.d("got average credit", doc.getElementsByClass("ui_alert").first().child(0).text());
-            databaseManager.updateAverageCredit(doc.getElementsByClass("ui_alert").first().child(0).text());
-            aScoreItem = new ScoreItem();
-            aScoreItem.setTitle(table.child(0).child(3).text());
-            aScoreItem.setCredit(Double.parseDouble(table.child(0).child(7).text().replace("\n", "").replace(" ", "")));
-            aScoreItem.setScore(Double.parseDouble(table.child(0).child(8).child(0).child(0).text().replace("&nbsp;", "").replace("\n", "").replace(" ", "")));
             table.child(0).remove();
-            Log.d("got Score", aScoreItem.toString());
-            databaseManager.addScore(aScoreItem);
+//        Log.d("score",table.toString());
+            if (table.child(0).child(0).text().equals("暂无记录")) {
+                Log.d("doUpdateScore", "no score");
+            } else while (!table.children().isEmpty()) {
+                Log.d("got average credit", doc.getElementsByClass("ui_alert").first().child(0).text());
+                databaseManager.updateAverageCredit(doc.getElementsByClass("ui_alert").first().child(0).text());
+                aScoreItem = new ScoreItem();
+                aScoreItem.setTitle(table.child(0).child(3).text());
+                aScoreItem.setCredit(Double.parseDouble(table.child(0).child(7).text().replace("\n", "").replace(" ", "")));
+                aScoreItem.setScore(Double.parseDouble(table.child(0).child(8).child(0).child(0).text().replace("&nbsp;", "").replace("\n", "").replace(" ", "")));
+                table.child(0).remove();
+                Log.d("got Score", aScoreItem.toString());
+                databaseManager.addScore(aScoreItem);
+            }
         }
+
 
         databaseManager.closeDB();
     }

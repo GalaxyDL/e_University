@@ -39,7 +39,7 @@ public class PublicClassFragment extends ChoosingClassesFragment{
 //            adapter.addClass(classForChoose);
 //        }
 
-        recyclerView.setAdapter(adapter);
+
 
         return view;
     }
@@ -51,5 +51,6 @@ public class PublicClassFragment extends ChoosingClassesFragment{
             adapter.addClass(classForChoose);
         }
         recyclerView.refreshDrawableState();
+        recyclerView.setAdapter(adapter);
     }
 }
