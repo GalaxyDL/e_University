@@ -23,6 +23,7 @@ public class InfoActivity extends AppCompatActivity {
         toolbar=(Toolbar) findViewById(R.id.toolbarOfInfo);
 
         toolbar.setTitle("关于");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setNavigationIcon(R.drawable.keyboard_backspace);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

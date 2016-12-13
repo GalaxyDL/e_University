@@ -13,7 +13,6 @@
             android:id="@+id/toolbarOfInfo"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:titleTextColor="@color/white"
             app:layout_collapseMode="pin">
 
         </android.support.v7.widget.Toolbar>

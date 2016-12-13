@@ -1,13 +1,9 @@
 package com.wangh.e_university;
 
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.SearchRecentSuggestionsProvider;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import org.jsoup.nodes.Document;
@@ -551,9 +547,10 @@ public class DataManager {
 
     private void doUpdateScore(Document doc) {
         databaseManager = new DatabaseManager(context);
-        if(!doc.title().equals("500 - 系统内部错误")){
+        Element table = doc.getElementsByTag("tbody").get(7);
+        if(table!=null){
             databaseManager.deleteAllScore();
-            Element table = doc.getElementsByTag("tbody").get(7);
+
             ScoreItem aScoreItem;
 
             table.child(0).remove();
