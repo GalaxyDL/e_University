@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +23,12 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
     private final Context context;
     private ArrayList<ClassItem> classes=new ArrayList<ClassItem>();
     private ArrayList<Boolean> isDate=new ArrayList<>();
+    private ArrayList<Boolean> isToday=new ArrayList<>();
 
     public void addClass(ClassItem classItem){
         classes.add(classItem);
         isDate.add(classItem.isDate());
+        isToday.add(classItem.isToday());
     }
 
     public ClassAdapter(Context context){
@@ -44,12 +47,23 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
         ClassItem aClass=classes.get(position);
 //        Log.d("onBindViewHolder",aClass.toString());
         if(isDate.get(position)){
-            setDateItem(holder,classes.get(position));
+            if(!isToday.get(position)) {
+                setDateItem(holder,classes.get(position));
+            }else{
+                setTodayItem(holder,classes.get(position));
+            }
+
             Log.d("onBindViewHolder date",classes.get(position).toString());
         }else{
             setClassItem(holder,classes.get(position));
             Log.d("onBindViewHolder class",classes.get(position).toString());
         }
+    }
+
+    private void setTodayItem(ClassHolder holder,ClassItem aClass){
+        setDateItem(holder,aClass);
+        holder.classLocation.setTextColor(context.getResources().getColor(R.color.colorAccent));
+        holder.classLocation.getPaint().setFakeBoldText(true);
     }
 
     private void setDateItem(ClassHolder holder,ClassItem aClass){

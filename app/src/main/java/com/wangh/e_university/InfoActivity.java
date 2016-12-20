@@ -1,5 +1,7 @@
 package com.wangh.e_university;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +26,7 @@ public class InfoActivity extends AppCompatActivity {
 
         toolbar.setTitle("关于");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        toolbar.setNavigationIcon(R.drawable.keyboard_backspace);
+        toolbar.setNavigationIcon(R.drawable.arrow_left);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,6 +36,14 @@ public class InfoActivity extends AppCompatActivity {
 
         infoAdapter = new InfoAdapter(this);
         infoAdapter.addInfo(new InfoItem("Haochen Wang","作者"));
+        try {
+            PackageManager packageManager = getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(),0);
+            infoAdapter.addInfo(new InfoItem(packageInfo.versionName,"版本"));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         infoAdapter.addInfo(new InfoItem("https://github.com/GalaxyDL/e_University","开放源代码"));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(infoAdapter);

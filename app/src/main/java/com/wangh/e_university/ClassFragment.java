@@ -120,16 +120,19 @@ public class ClassFragment extends Fragment {
         int month=START_MONTH;
         int actualDate;
         boolean noClass=false;
+        boolean isToday;
         boolean passed;
         ArrayList<ClassItem> classes=(ArrayList<ClassItem>) databaseManager.queryClass();
+        ArrayList<ClassItem> dayClasses;
 
         passed=true;
         for(int i=1;i<=20;i++){
             for(int j=1;j<=7;j++){
                 actualDate=daysList.get(i-1).getDays().charAt(j-1)-'0';
-                adapter.addClass(new ClassItem(j,day,month));
+                dayClasses = new ArrayList<ClassItem>();
+
                 if(i==nowWeek&&j==nowDate){
-                    nowClass=adapter.getItemCount()-1;
+                    nowClass=adapter.getItemCount();
                 }
                 for(ClassItem aClass:classes){
                     if(actualDate!=0){
@@ -151,13 +154,25 @@ public class ClassFragment extends Fragment {
                             }
                             aClass.setPassed(passed);
                             try {
-                                adapter.addClass((ClassItem) aClass.clone());
+                                dayClasses.add((ClassItem) aClass.clone());
                             } catch (CloneNotSupportedException e) {
                                 e.printStackTrace();
                             }
                         }
                     }
                 }
+                if(j==nowDate&&day==nowDay&&month==nowMonth){
+                    isToday=true;
+                }else{
+                    isToday=false;
+                }
+                if(dayClasses.size()!=0){
+                    adapter.addClass(new ClassItem(j,day,month,isToday));
+                }
+                for(ClassItem item:dayClasses){
+                    adapter.addClass(item);
+                }
+
                 day=getDay(day,month,1);
                 month=day==1?month+1:month;
                 month=month==13?1:month;
@@ -166,64 +181,12 @@ public class ClassFragment extends Fragment {
                 passed=false;
             }
         }
-//        ArrayList<ClassItem> classerDay;
-//        for(int i=nowDate;i<=7;i++){
-//            classerDay=new ArrayList<ClassItem>();
-//            for(ClassItem aClass:classes){
-//                if(i==aClass.getDate()&&(nowWeek>=aClass.getWeekStart()&&nowWeek<=aClass.getWeekEnd())&&((nowWeek%2==0&&aClass.getDoubleWeek()==1)||(nowWeek%2==1&&aClass.getSingleWeek()==1))){
-//                    if((nowDate==i&&(nowHour<CLASS_END_HOUR[aClass.getTimeEnd()]||(nowHour==CLASS_END_HOUR[aClass.getTimeEnd()]&&nowMin<CLASS_END_MIN[aClass.getTimeEnd()])))||nowDate!=i){
-//                        aClass.setDate(false);
-//                        classerDay.add(aClass);
-//                        weekCount++;
-//                    }
-//                }
-//            }
-//            if(classerDay.size()>0){
-//                adapter.addClass(new ClassItem(i,getDay(nowMonth,i-nowDate),getMonth(nowMonth,i-nowDate)));
-//                for(int j=0;j<classerDay.size();j++){
-//                    adapter.addClass(classerDay.get(j));
-//                }
-//            }
-//        }
-//        if(nowDate==7&&weekCount==0){
-//            nowDate=1;
-//            nowHour=0;
-//            nowMin=0;
-//            nowDay++;
-//            if(nowDay>MONTH_DAY[nowMonth-1]){
-//                nowDay=1;
-//                nowMonth++;
-//            }
-//            if(nowMonth>12){
-//                nowMonth=1;
-//            }
-//
-//            noClass=true;
-//            for(int i=nowDate;i<=7;i++){
-//                classerDay=new ArrayList<ClassItem>();
-//                for(ClassItem aClass:classes){
-//                    if(i==aClass.getDate()&&(nowWeek>=aClass.getWeekStart()&&nowWeek<=aClass.getWeekEnd())&&((nowWeek%2==0&&aClass.getDoubleWeek()==1)||(nowWeek%2==1&&aClass.getSingleWeek()==1))){
-//                        if((nowDate==i&&(nowHour<CLASS_END_HOUR[aClass.getTimeEnd()]||(nowHour==CLASS_END_HOUR[aClass.getTimeEnd()]&&nowMin<CLASS_END_MIN[aClass.getTimeEnd()])))||nowDate!=i){
-//                            aClass.setDate(false);
-//                            classerDay.add(aClass);
-//                            weekCount++;
-//                        }
-//                    }
-//                }
-//                if(classerDay.size()>0){
-//                    adapter.addClass(new ClassItem(i,getDay(nowMonth,i-nowDate),getMonth(nowMonth,i-nowDate)));
-//                    for(int j=0;j<classerDay.size();j++){
-//                        adapter.addClass(classerDay.get(j));
-//                    }
-//                }
-//            }
-//        }
         String classCountText;
         if(weekCount==0){
             classCountText="这周没有课啦~休息下吧~";
 
         }else{
-            if(!noClass)classCountText="这周还有"+weekCount+"节课，认真听课哦~";
+            if(!noClass)classCountText="现在是第"+nowWeek+"周，这周还有"+weekCount+"节课，认真听课哦~";
             else classCountText="下周有"+weekCount+"节课，准备一下吧~";
         }
         tip.setText(classCountText);

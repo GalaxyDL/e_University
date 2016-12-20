@@ -29,8 +29,14 @@ public class ExamFragment extends Fragment {
         super.onCreate(savedInstanceState);
         adapter = new ExamAdapter(this.getActivity());
         databaseManager= new DatabaseManager(getContext());
-        ArrayList<ExamItem> exams=(ArrayList<ExamItem>) databaseManager.queryExam();
+        ArrayList<ExamItem> exams = (ArrayList<ExamItem>) databaseManager.queryExam();
+        ArrayList<ClassItem> classes = (ArrayList<ClassItem>) databaseManager.queryClass();
         for(ExamItem aExam:exams){
+            for (ClassItem aClass:classes){
+                if(aClass.getClassTitle().equals(aExam.getTitle())){
+                    aExam.setColorID(aClass.getColorID());
+                }
+            }
             adapter.addExam(aExam);
         }
         count=exams.size();

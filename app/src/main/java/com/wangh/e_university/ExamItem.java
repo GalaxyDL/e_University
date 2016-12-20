@@ -10,6 +10,7 @@ public class ExamItem {
     private String location;
     private String modus;
     private int credit;
+    private int colorID;
 
     public ExamItem(){
 
@@ -70,6 +71,14 @@ public class ExamItem {
 
     public void setModus(String modus) {
         this.modus = modus;
+    }
+
+    public void setColorID(int colorID) {
+        this.colorID = colorID;
+    }
+
+    public int getColorID() {
+        return colorID;
     }
 
     @Override

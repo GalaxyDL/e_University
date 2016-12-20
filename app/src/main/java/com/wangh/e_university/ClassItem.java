@@ -24,11 +24,13 @@ public class ClassItem implements Cloneable{
     private int colorID;
     private boolean isDate=false;
     private boolean isPassed;
+    private boolean isToday;
 
-    public ClassItem(int date, int day ,int month) {
+    public ClassItem(int date, int day ,int month, boolean isToday) {
         this.day = day;
         this.date = date;
         this.month = month;
+        this.isToday = isToday;
         isDate=true;
     }
 
@@ -180,6 +182,14 @@ public class ClassItem implements Cloneable{
 
     public void setPassed(boolean passed) {
         isPassed = passed;
+    }
+
+    public boolean isToday() {
+        return isToday;
+    }
+
+    public void setToday(boolean today) {
+        isToday = today;
     }
 
     @Override
