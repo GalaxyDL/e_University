@@ -477,8 +477,10 @@ public class DataManager {
                 String postContent = "xnxqdm=";
                 if (date.getMonth() <= 8 && date.getMonth() >= 2) {
                     postContent += (date.getYear() - 1) + "-" + date.getYear() + "-2";
-                } else {
+                } else if(date.getMonth()>8){
                     postContent += date.getYear() + "-" + (date.getYear() + 1) + "-1";
+                } else if(date.getMonth()<2){
+                    postContent += (date.getYear()-1) + "-" + date.getYear() + "-1";
                 }
                 msg.what = EXAM;
                 msg.obj = httpRequester.post("http://ssfw.tjut.edu.cn/ssfw/xsks/kcxx.do", postContent, true);
@@ -521,8 +523,10 @@ public class DataManager {
                 String postContent = "qXndm_ys=";
                 if (date.getMonth() <= 8 && date.getMonth() >= 2) {
                     postContent += (date.getYear() - 1) + "-" + date.getYear();
-                } else {
+                } else if(date.getMonth()>8){
                     postContent += date.getYear() + "-" + (date.getYear() + 1);
+                } else if(date.getMonth()<2){
+                    postContent += (date.getYear()-1) + "-" + date.getYear();
                 }
                 postContent += "&qXqdm_ys=";
                 if (date.getMonth() <= 8 && date.getMonth() >= 2) {
@@ -585,9 +589,12 @@ public class DataManager {
                     String urlContent = "";
                     if (date.getMonth() <= 8 && date.getMonth() >= 2) {
                         urlContent += (date.getYear() - 1) + "-" + date.getYear() + "-2";
-                    } else {
+                    } else if(date.getMonth()>8){
                         urlContent += date.getYear() + "-" + (date.getYear() + 1) + "-1";
+                    } else if(date.getMonth()<2){
+                        urlContent += (date.getYear()-1) + "-" + date.getYear() + "-1";
                     }
+
                     msg.what = CLASS_TABLE;
                     msg.obj = httpRequester.get("http://ssfw.tjut.edu.cn/ssfw/pkgl/kcbxx/4/" + urlContent + ".do");
 //                    msg.obj = httpRequester.get("http://ssfw.tjut.edu.cn/ssfw/pkgl/kcbxx/4/2016-2017-1.do");
