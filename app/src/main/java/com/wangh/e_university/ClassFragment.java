@@ -122,12 +122,14 @@ public class ClassFragment extends Fragment {
         boolean noClass=false;
         boolean isToday;
         boolean passed;
+        boolean isHoliday=false;
         ArrayList<ClassItem> classes=(ArrayList<ClassItem>) databaseManager.queryClass();
         ArrayList<ClassItem> dayClasses;
 
         passed=true;
         for(int i=1;i<=20;i++){
             for(int j=1;j<=7;j++){
+
                 actualDate=daysList.get(i-1).getDays().charAt(j-1)-'0';
                 dayClasses = new ArrayList<ClassItem>();
 
@@ -166,7 +168,7 @@ public class ClassFragment extends Fragment {
                 }else{
                     isToday=false;
                 }
-                if(dayClasses.size()!=0){
+                if(dayClasses.size()!=0||isToday){
                     adapter.addClass(new ClassItem(j,day,month,isToday));
                 }
                 for(ClassItem item:dayClasses){
@@ -189,7 +191,15 @@ public class ClassFragment extends Fragment {
             if(!noClass)classCountText="现在是第"+nowWeek+"周，这周还有"+weekCount+"节课，认真听课哦~";
             else classCountText="下周有"+weekCount+"节课，准备一下吧~";
         }
+        if(nowWeek==0){
+            classCountText="放假啦~~";
+            adapter.addClass(new ClassItem(nowDate,nowDay,nowMonth,true));
+            nowClass=adapter.getItemCount()-1;
+        }
         tip.setText(classCountText);
+        if(nowClass==-1){
+            nowClass=adapter.getItemCount()-1;
+        }
         linearLayoutManager.scrollToPositionWithOffset(nowClass,0);
         //recyclerView.smoothScrollToPosition(nowClass);
 
