@@ -24,11 +24,24 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
     private ArrayList<ClassItem> classes=new ArrayList<ClassItem>();
     private ArrayList<Boolean> isDate=new ArrayList<>();
     private ArrayList<Boolean> isToday=new ArrayList<>();
+    private ItemOnClickListener itemOnClickListener;
+
+    public interface ItemOnClickListener{
+        public void onClick(View view,int index);
+    }
+
+    public void setItemOnClickListener(ItemOnClickListener itemOnClickListener) {
+        this.itemOnClickListener = itemOnClickListener;
+    }
 
     public void addClass(ClassItem classItem){
         classes.add(classItem);
         isDate.add(classItem.isDate());
         isToday.add(classItem.isToday());
+    }
+
+    public ClassItem getClass(int index) {
+        return classes.get(index);
     }
 
     public ClassAdapter(Context context){
@@ -38,7 +51,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
 
     @Override
     public ClassHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ClassHolder classHolder= new ClassHolder(layoutInflater.inflate(R.layout.class_item,parent,false));
+        ClassHolder classHolder= new ClassHolder(layoutInflater.inflate(R.layout.class_item,parent,false),itemOnClickListener);
         return classHolder;
     }
 
@@ -122,15 +135,22 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
         TextView classTime;
         CardView cardView;
         LinearLayout classBlock;
+        ItemOnClickListener itemOnClickListener;
 
-        ClassHolder(View view){
+        ClassHolder(View view, final ItemOnClickListener itemOnClickListener){
             super(view);
+            this.itemOnClickListener=itemOnClickListener;
             cardView=(CardView)view.findViewById(R.id.card);
             classTitle=(TextView)view.findViewById(R.id.classTitle);
             classLocation=(TextView)view.findViewById(R.id.classLocation);
             classTime=(TextView)view.findViewById(R.id.classTime);
             classBlock=(LinearLayout)view.findViewById(R.id.classBlock);
+            classBlock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemOnClickListener.onClick(view,getAdapterPosition());
+                }
+            });
         }
-
     }
 }

@@ -24,8 +24,9 @@
         </activity>
         <activity
             android:name="cn.bmob.v3.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
-        <activity android:name=".InfoActivity"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".InfoActivity" />
+        <activity android:name=".ClassActivity"></activity>
     </application>
 
 </manifest>

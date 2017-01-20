@@ -1,5 +1,6 @@
 package com.wangh.e_university;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -30,7 +31,7 @@ import cn.bmob.v3.listener.FindListener;
 /**
  * Created by wangh on 2016/8/2.
  */
-public class ClassFragment extends Fragment {
+public class ClassFragment extends Fragment{
     private final static int[] MONTH_DAY={31,28,31,30,31,30,31,31,30,31,30,31};
     private final static int[] CLASS_END_HOUR={0,8,9,10,11,14,15,16,17,19,20,21};
     private final static int[] CLASS_END_MIN={0,45,40,55,50,45,40,55,50,15,10,5};
@@ -81,7 +82,7 @@ public class ClassFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_class, container, false);
         tip=(TextView) view.findViewById(R.id.classCount);
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatButtonOfClass);
@@ -106,6 +107,14 @@ public class ClassFragment extends Fragment {
         Log.d("nowMin",""+nowMin);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        adapter.setItemOnClickListener(new ClassAdapter.ItemOnClickListener() {
+            @Override
+            public void onClick(View view, int index) {
+                Intent intent=new Intent(getActivity(),ClassActivity.class);
+                intent.putExtra("class",adapter.getClass(index));
+                startActivity(intent);
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -212,9 +221,10 @@ public class ClassFragment extends Fragment {
 //                recyclerView.smoothScrollToPosition(nowClass);
             }
         });
+
     }
 
-    private int getMonth(int nowMonth,int offset){
+    private int getMonth(int nowMonth, int offset){
         if(getDay(nowMonth,offset)!=nowDay+offset){
             return nowMonth+1>12?1:nowMonth+1;
         }

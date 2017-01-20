@@ -3,10 +3,12 @@ package com.wangh.e_university;
 
 import android.text.format.Time;
 
+import java.io.Serializable;
+
 /**
  * Created by wangh on 2016/8/3.
  */
-public class ClassItem implements Cloneable{
+public class ClassItem implements Cloneable,Serializable{
     private String classTitle;
     private String classLocation;
     private String classTime;
