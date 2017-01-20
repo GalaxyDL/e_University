@@ -8,9 +8,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
 
 public class ClassActivity extends AppCompatActivity {
 
@@ -18,9 +20,36 @@ public class ClassActivity extends AppCompatActivity {
     private InfoAdapter infoAdapter;
     private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private View rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ClassItem classItem=(ClassItem) getIntent().getSerializableExtra("class");
+        switch (classItem.getColorID()){
+            case 0:setTheme(R.style.Color0); break;
+            case 1:setTheme(R.style.Color1); break;
+            case 2:setTheme(R.style.Color2); break;
+            case 3:setTheme(R.style.Color3); break;
+            case 4:setTheme(R.style.Color4); break;
+            case 5:setTheme(R.style.Color5); break;
+            case 6:setTheme(R.style.Color6); break;
+            case 7:setTheme(R.style.Color7); break;
+            case 8:setTheme(R.style.Color8); break;
+            case 9:setTheme(R.style.Color9); break;
+            case 10:setTheme(R.style.Color10); break;
+            case 11:setTheme(R.style.Color11); break;
+            case 12:setTheme(R.style.Color12); break;
+            case 13:setTheme(R.style.Color13); break;
+            case 14:setTheme(R.style.Color14); break;
+            case 15:setTheme(R.style.Color15); break;
+            case 16:setTheme(R.style.Color16); break;
+            case 17:setTheme(R.style.Color17); break;
+        }
+        if(classItem.isPassed()){
+            setTheme(R.style.Grey);
+        }
+
+
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_class);
@@ -38,38 +67,38 @@ public class ClassActivity extends AppCompatActivity {
         });
         infoAdapter = new InfoAdapter(this);
 
+        rootView = findViewById(R.id.coordinatorLayoutOfClassInfo);
+        rootView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+                int x=displayMetrics.widthPixels;
+                int y=displayMetrics.heightPixels;
 
+                rootView.getViewTreeObserver().removeOnPreDrawListener(this);
+                rootView.setScaleY(getIntent().getIntExtra("height",0)/(float)y);
+                rootView.setScaleX(getIntent().getIntExtra("width",0)/(float)x);
+                rootView.setPivotX(getIntent().getIntExtra("x",0));
+                rootView.setPivotY(getIntent().getIntExtra("y",0));
 
-        ClassItem classItem=(ClassItem) getIntent().getSerializableExtra("class");
-        collapsingToolbarLayout.setTitle(classItem.getClassTitle());
+                rootView.animate()
+                        .scaleY(1)
+                        .scaleX(1)
+                        .setDuration(150)
+                        .setInterpolator(new AccelerateInterpolator())
+                        .start();
+                return true;
+            }
+        });
 
-//        switch (classItem.getColorID()){
-//            case 0:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor0)); break;
-//            case 1:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor1)); break;
-//            case 2:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor2)); break;
-//            case 3:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor3)); break;
-//            case 4:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor4)); break;
-//            case 5:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor5)); break;
-//            case 6:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor6)); break;
-//            case 7:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor7)); break;
-//            case 8:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor8)); break;
-//            case 9:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor9)); break;
-//            case 10:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor10)); break;
-//            case 11:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor11)); break;
-//            case 12:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor12)); break;
-//            case 13:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor13)); break;
-//            case 14:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor14)); break;
-//            case 15:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor15)); break;
-//            case 16:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor16)); break;
-//            case 17:toolbar.setBackgroundColor(getResources().getColor(R.color.classColor17)); break;
-//        }
         infoAdapter.addInfo(new InfoItem(classItem.getClassTime(),"上课时间"));
         infoAdapter.addInfo(new InfoItem(classItem.getTeacher(),"老师"));
         infoAdapter.addInfo(new InfoItem(classItem.getClassLocation(),"地点"));
+        collapsingToolbarLayout.setTitle(classItem.getClassTitle());
+
         recyclerView.setAdapter(infoAdapter);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setSubtitleTextColor(Color.WHITE);
-
-
     }
+
 }

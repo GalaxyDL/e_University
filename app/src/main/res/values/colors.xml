@@ -24,8 +24,27 @@
     <color name="classColor15">#795548</color>
     <color name="classColor16">#607D8B</color>
     <color name="classColor17">#7B1FA2</color>
+    <color name="classColor0Dark">#1976D2</color>
+    <color name="classColor1Dark">#D32F2F</color>
+    <color name="classColor2Dark">#C2185B</color>
+    <color name="classColor3Dark">#7B1FA2</color>
+    <color name="classColor4Dark">#303F9F</color>
+    <color name="classColor5Dark">#0277BD</color>
+    <color name="classColor6Dark">#0097A7</color>
+    <color name="classColor7Dark">#006064</color>
+    <color name="classColor8Dark">#2E7D32</color>
+    <color name="classColor9Dark">#33691E</color>
+    <color name="classColor10Dark">#9E9D24</color>
+    <color name="classColor11Dark">#F57F17</color>
+    <color name="classColor12Dark">#FF4F00</color>
+    <color name="classColor13Dark">#DD3600</color>
+    <color name="classColor14Dark">#E64A19</color>
+    <color name="classColor15Dark">#5D4037</color>
+    <color name="classColor16Dark">#455A64</color>
+    <color name="classColor17Dark">#4A148C</color>
 
     <color name="grey">#BDBDBD</color>
+    <color name="greyDark">#757575</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
 </resources>

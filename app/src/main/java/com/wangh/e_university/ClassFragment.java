@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -109,10 +110,19 @@ public class ClassFragment extends Fragment{
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter.setItemOnClickListener(new ClassAdapter.ItemOnClickListener() {
             @Override
-            public void onClick(View view, int index) {
-                Intent intent=new Intent(getActivity(),ClassActivity.class);
-                intent.putExtra("class",adapter.getClass(index));
-                startActivity(intent);
+            public void onClick(View view, int index, ClassAdapter.ClassHolder classHolder) {
+                if(!adapter.getClass(index).isDate()){
+                    Intent intent=new Intent(getActivity(),ClassActivity.class);
+                    int[] location=new int[2];
+                    classHolder.classBlock.getLocationOnScreen(location);
+                    intent.putExtra("class",adapter.getClass(index));
+                    intent.putExtra("y",location[1]+classHolder.classBlock.getHeight());
+                    intent.putExtra("x",location[0]+classHolder.classBlock.getWidth());
+                    intent.putExtra("height",classHolder.classBlock.getHeight());
+                    intent.putExtra("width",classHolder.classBlock.getWidth());
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(0, 0);
+                }
             }
         });
         recyclerView.setAdapter(adapter);

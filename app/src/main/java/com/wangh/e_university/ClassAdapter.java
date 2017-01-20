@@ -27,7 +27,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
     private ItemOnClickListener itemOnClickListener;
 
     public interface ItemOnClickListener{
-        public void onClick(View view,int index);
+        public void onClick(View view,int index,ClassHolder classHolder);
     }
 
     public void setItemOnClickListener(ItemOnClickListener itemOnClickListener) {
@@ -136,6 +136,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
         CardView cardView;
         LinearLayout classBlock;
         ItemOnClickListener itemOnClickListener;
+        ClassHolder classHolder = this;
 
         ClassHolder(View view, final ItemOnClickListener itemOnClickListener){
             super(view);
@@ -145,10 +146,11 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
             classLocation=(TextView)view.findViewById(R.id.classLocation);
             classTime=(TextView)view.findViewById(R.id.classTime);
             classBlock=(LinearLayout)view.findViewById(R.id.classBlock);
+
             classBlock.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    itemOnClickListener.onClick(view,getAdapterPosition());
+                    itemOnClickListener.onClick(view,getAdapterPosition(),classHolder);
                 }
             });
         }
