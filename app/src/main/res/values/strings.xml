@@ -8,6 +8,8 @@
     <string name="login_submit">登录</string>
     <string name="codeTip">点击左侧更新验证码~</string>
     <string name="remember_pas_switch">记住密码</string>
+    <string name="get_now_score">查询当前学期成绩(不选中则查询上学期成绩)</string>
+    <string name="get_pass_score">查询上学期成绩</string>
 
     <string name="buttons_navigation_search">查询</string>
     <string name="buttons_navigation_choose">选课</string>

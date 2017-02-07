@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ public class LoginFragment extends Fragment {
     private TextInputLayout password;
     private TextInputLayout inputCodes;
     private SwitchCompat rememberPas;
+    private SwitchCompat isGetNowScore;
     private ImageView codes;
     private final String codesUrl = "http://my.tjut.edu.cn/captchaGenerate.portal";
     private Document doc;
@@ -82,6 +84,8 @@ public class LoginFragment extends Fragment {
                             editor.commit();
                             Snackbar.make(coordinatorLayout, "登录成功！" + name+"。正在更新数据", Snackbar.LENGTH_SHORT).show();
                         }
+                        DataManager.setIsGetNowScore(isGetNowScore.isChecked());
+                        Log.d("isGetNowScore",""+isGetNowScore.isChecked());
                         DataManager dataManager=new DataManager(getContext());
 //                        updated=0;
                         dataManager.updateInfo();
@@ -107,6 +111,7 @@ public class LoginFragment extends Fragment {
         password = (TextInputLayout) view.findViewById(R.id.password);
         inputCodes = (TextInputLayout) view.findViewById(R.id.inputCodes);
         rememberPas = (SwitchCompat) view.findViewById(R.id.rememberPassword);
+        isGetNowScore = (SwitchCompat) view.findViewById(R.id.isGetNowScore);
         codes = (ImageView) view.findViewById(R.id.codes);
         httpRequester.setChoose(false);
         getUrlImage();
@@ -128,6 +133,8 @@ public class LoginFragment extends Fragment {
                 rememberPas.setChecked(true);
             }
         }
+
+        isGetNowScore.setChecked(true);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

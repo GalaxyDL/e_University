@@ -246,6 +246,8 @@ public class DataManager {
         put("5822", "汉语言文学(国际教育)");
     }};
 
+    private static boolean isGetNowScore=true;
+
     private SharedPreferences sharedPreferences;
     private DatabaseManager databaseManager;
     private Context context;
@@ -521,18 +523,34 @@ public class DataManager {
                 Message msg = new Message();
                 date = new Date();
                 String postContent = "qXndm_ys=";
-                if (date.getMonth() <= 8 && date.getMonth() >= 2) {
-                    postContent += (date.getYear() - 1) + "-" + date.getYear();
-                } else if(date.getMonth()>8){
-                    postContent += date.getYear() + "-" + (date.getYear() + 1);
-                } else if(date.getMonth()<2){
-                    postContent += (date.getYear()-1) + "-" + date.getYear();
-                }
-                postContent += "&qXqdm_ys=";
-                if (date.getMonth() <= 8 && date.getMonth() >= 2) {
-                    postContent += 2;
-                } else {
-                    postContent += 1;
+                if(isGetNowScore){
+                    if (date.getMonth() <= 8 && date.getMonth() >= 2) {
+                        postContent += (date.getYear() - 1) + "-" + date.getYear();
+                    } else if(date.getMonth()>8){
+                        postContent += date.getYear() + "-" + (date.getYear() + 1);
+                    } else if(date.getMonth()<2){
+                        postContent += (date.getYear()-1) + "-" + date.getYear();
+                    }
+                    postContent += "&qXqdm_ys=";
+                    if (date.getMonth() <= 8 && date.getMonth() >= 2) {
+                        postContent += 2;
+                    } else {
+                        postContent += 1;
+                    }
+                }else{
+                    if (date.getMonth() <= 8 && date.getMonth() >= 2) {
+                        postContent += (date.getYear() - 1) + "-" + date.getYear();
+                    } else if(date.getMonth()>8){
+                        postContent += (date.getYear()-1) + "-" + date.getYear();
+                    } else if(date.getMonth()<2){
+                        postContent += (date.getYear()-2) + "-" + (date.getYear()-1);
+                    }
+                    postContent += "&qXqdm_ys=";
+                    if (date.getMonth() <= 8 && date.getMonth() >= 2) {
+                        postContent += 1;
+                    } else {
+                        postContent += 2;
+                    }
                 }
                 postContent += "&";
                 msg.what = 1;
@@ -726,4 +744,11 @@ public class DataManager {
         }
     }
 
+    public static void setIsGetNowScore(boolean isGetNowScore) {
+        DataManager.isGetNowScore = isGetNowScore;
+    }
+
+    public static boolean isGetNowScore() {
+        return isGetNowScore;
+    }
 }

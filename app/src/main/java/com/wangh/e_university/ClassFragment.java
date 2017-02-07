@@ -37,8 +37,8 @@ public class ClassFragment extends Fragment{
     private final static int[] CLASS_END_HOUR={0,8,9,10,11,14,15,16,17,19,20,21};
     private final static int[] CLASS_END_MIN={0,45,40,55,50,45,40,55,50,15,10,5};
 
-    private final static int START_MONTH=8;
-    private final static int START_DAY=29;
+    private int startDay;
+    private int startMonth;
 
     private RecyclerView recyclerView;
     private ClassAdapter adapter;
@@ -62,6 +62,7 @@ public class ClassFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        date=new Date();
         BmobQuery<Days> query = new BmobQuery<Days>();
         query.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.setMaxCacheAge(TimeUnit.DAYS.toMillis(30));
@@ -92,8 +93,10 @@ public class ClassFragment extends Fragment{
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new ClassAdapter(this.getActivity());
 
-        date=new Date();
+        startDay=date.getStartDate().getDay();
+        startMonth=date.getStartDate().getMonth();
         nowDate=date.getData();
+
         if(nowDate==0)nowDate=7;
         Log.d("nowDate",""+nowDate);
         nowMonth=date.getMonth();
@@ -135,8 +138,8 @@ public class ClassFragment extends Fragment{
 
         nowClass=-1;
         int weekCount=0;
-        int day=START_DAY;
-        int month=START_MONTH;
+        int day=startDay;
+        int month=startMonth;
         int actualDate;
         boolean noClass=false;
         boolean isToday;
@@ -145,7 +148,15 @@ public class ClassFragment extends Fragment{
         ArrayList<ClassItem> classes=(ArrayList<ClassItem>) databaseManager.queryClass();
         ArrayList<ClassItem> dayClasses;
 
-        passed=true;
+        if(nowWeek==0){
+            if(nowMonth<=startMonth){
+                adapter.addClass(new ClassItem(nowDate,nowDay,nowMonth,true));
+                nowClass=adapter.getItemCount()-1;
+            }
+            passed=false;
+        }else{
+            passed=true;
+        }
         for(int i=1;i<=20;i++){
             for(int j=1;j<=7;j++){
 
@@ -212,8 +223,10 @@ public class ClassFragment extends Fragment{
         }
         if(nowWeek==0){
             classCountText="放假啦~~";
-            adapter.addClass(new ClassItem(nowDate,nowDay,nowMonth,true));
-            nowClass=adapter.getItemCount()-1;
+            if(nowMonth>startMonth){
+                adapter.addClass(new ClassItem(nowDate,nowDay,nowMonth,true));
+                nowClass=adapter.getItemCount()-1;
+            }
         }
         tip.setText(classCountText);
         if(nowClass==-1){
@@ -260,10 +273,10 @@ public class ClassFragment extends Fragment{
             if(nowYear%400==0||(nowYear%4==0&&nowYear%100!=0)){
                 if(result>MONTH_DAY[nowMonth-1]+1){
                     result-=MONTH_DAY[nowMonth-1]+1;
-                }else{
-                    if(result>MONTH_DAY[nowMonth-1]){
-                        result-=MONTH_DAY[nowMonth-1];
-                    }
+                }
+            }else{
+                if(result>MONTH_DAY[nowMonth-1]){
+                    result-=MONTH_DAY[nowMonth-1];
                 }
             }
         }
@@ -282,10 +295,10 @@ public class ClassFragment extends Fragment{
             if(nowYear%400==0||(nowYear%4==0&&nowYear%100!=0)){
                 if(result>MONTH_DAY[nowMonth-1]+1){
                     result-=MONTH_DAY[nowMonth-1]+1;
-                }else{
-                    if(result>MONTH_DAY[nowMonth-1]){
-                        result-=MONTH_DAY[nowMonth-1];
-                    }
+                }
+            }else{
+                if(result>MONTH_DAY[nowMonth-1]){
+                    result-=MONTH_DAY[nowMonth-1];
                 }
             }
         }

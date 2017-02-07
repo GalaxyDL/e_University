@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -89,6 +90,12 @@
                         android:layout_gravity="bottom"
                         android:text="@string/codeTip"/>
                 </LinearLayout>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:text="@string/get_now_score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/isGetNowScore"/>
 
                 <android.support.v7.widget.SwitchCompat
                     android:text="@string/remember_pas_switch"
