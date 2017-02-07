@@ -123,8 +123,8 @@ public class ClassFragment extends Fragment{
                     intent.putExtra("x",location[0]+classHolder.classBlock.getWidth());
                     intent.putExtra("height",classHolder.classBlock.getHeight());
                     intent.putExtra("width",classHolder.classBlock.getWidth());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
-                    getActivity().overridePendingTransition(0, 0);
                 }
             }
         });

@@ -1,5 +1,6 @@
 package com.wangh.e_university;
 
+import android.animation.Animator;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,9 +10,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 
 public class ClassActivity extends AppCompatActivity {
@@ -62,7 +65,7 @@ public class ClassActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ClassActivity.this.finish();
+                onFinishAnimate();
             }
         });
         infoAdapter = new InfoAdapter(this);
@@ -71,22 +74,7 @@ public class ClassActivity extends AppCompatActivity {
         rootView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-                int x=displayMetrics.widthPixels;
-                int y=displayMetrics.heightPixels;
-
-                rootView.getViewTreeObserver().removeOnPreDrawListener(this);
-                rootView.setScaleY(getIntent().getIntExtra("height",0)/(float)y);
-                rootView.setScaleX(getIntent().getIntExtra("width",0)/(float)x);
-                rootView.setPivotX(getIntent().getIntExtra("x",0));
-                rootView.setPivotY(getIntent().getIntExtra("y",0));
-
-                rootView.animate()
-                        .scaleY(1)
-                        .scaleX(1)
-                        .setDuration(150)
-                        .setInterpolator(new AccelerateInterpolator())
-                        .start();
+                onDrawAnimate(this);
                 return true;
             }
         });
@@ -99,6 +87,76 @@ public class ClassActivity extends AppCompatActivity {
         recyclerView.setAdapter(infoAdapter);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setSubtitleTextColor(Color.WHITE);
+
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            onFinishAnimate();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void onDrawAnimate(ViewTreeObserver.OnPreDrawListener onPreDrawListener){
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int x=displayMetrics.widthPixels;
+        int y=displayMetrics.heightPixels;
+
+        rootView.getViewTreeObserver().removeOnPreDrawListener(onPreDrawListener);
+        rootView.setScaleY(getIntent().getIntExtra("height",0)/(float)y*1.2f);
+        rootView.setScaleX(getIntent().getIntExtra("width",0)/(float)x*1.2f);
+        rootView.setPivotX(getIntent().getIntExtra("x",0)*0.8f);
+        rootView.setPivotY(getIntent().getIntExtra("y",0)*0.8f);
+
+        rootView.animate()
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .scaleY(1)
+                .scaleX(1)
+                .setDuration(150)
+                .setInterpolator(new AccelerateInterpolator())
+                .start();
+    }
+
+    private void onFinishAnimate(){
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int x=displayMetrics.widthPixels;
+        int y=displayMetrics.heightPixels;
+
+        rootView.setPivotX(getIntent().getIntExtra("x",0)*0.8f);
+        rootView.setPivotY(getIntent().getIntExtra("y",0)*0.8f);
+
+        rootView.animate()
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .scaleY(getIntent().getIntExtra("height",0)/(float)y*1.2f)
+                .scaleX(getIntent().getIntExtra("width",0)/(float)x*1.2f)
+                .setDuration(100)
+                .setInterpolator(new AccelerateInterpolator())
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+
+                        ClassActivity.this.finish();
+                        overridePendingTransition(0, 0);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                })
+                .start();
     }
 
 }
