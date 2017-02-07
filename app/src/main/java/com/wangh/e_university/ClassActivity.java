@@ -1,6 +1,7 @@
 package com.wangh.e_university;
 
 import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -25,9 +26,11 @@ public class ClassActivity extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private View rootView;
 
+    private ClassItem classItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ClassItem classItem=(ClassItem) getIntent().getSerializableExtra("class");
+    classItem=(ClassItem) getIntent().getSerializableExtra("class");
         switch (classItem.getColorID()){
             case 0:setTheme(R.style.Color0); break;
             case 1:setTheme(R.style.Color1); break;
@@ -79,14 +82,7 @@ public class ClassActivity extends AppCompatActivity {
             }
         });
 
-        infoAdapter.addInfo(new InfoItem(classItem.getClassTime(),"上课时间"));
-        infoAdapter.addInfo(new InfoItem(classItem.getTeacher(),"老师"));
-        infoAdapter.addInfo(new InfoItem(classItem.getClassLocation(),"地点"));
-        collapsingToolbarLayout.setTitle(classItem.getClassTitle());
 
-        recyclerView.setAdapter(infoAdapter);
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setSubtitleTextColor(Color.WHITE);
 
     }
 
@@ -116,7 +112,45 @@ public class ClassActivity extends AppCompatActivity {
                 .scaleX(1)
                 .setDuration(150)
                 .setInterpolator(new AccelerateInterpolator())
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        textAppear();
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                })
                 .start();
+    }
+
+    private void textAppear(){
+        infoAdapter.addInfo(new InfoItem(classItem.getClassTime(),"上课时间"));
+        infoAdapter.addInfo(new InfoItem(classItem.getTeacher(),"老师"));
+        infoAdapter.addInfo(new InfoItem(classItem.getClassLocation(),"地点"));
+        collapsingToolbarLayout.setTitle(classItem.getClassTitle());
+
+        recyclerView.setAdapter(infoAdapter);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setSubtitleTextColor(Color.WHITE);
+    }
+
+    private void textDisappear(){
+        infoAdapter=new InfoAdapter(this);
+        collapsingToolbarLayout.setTitle("");
+        recyclerView.setAdapter(infoAdapter);
     }
 
     private void onFinishAnimate(){
@@ -136,12 +170,11 @@ public class ClassActivity extends AppCompatActivity {
                 .setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {
-
+                        textDisappear();
                     }
 
                     @Override
                     public void onAnimationEnd(Animator animator) {
-
                         ClassActivity.this.finish();
                         overridePendingTransition(0, 0);
                     }
