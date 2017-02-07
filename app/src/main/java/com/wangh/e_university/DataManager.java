@@ -8,10 +8,12 @@ import android.util.Log;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -22,6 +24,8 @@ public class DataManager {
     private final static int PUBLIC_CLASSES = 3;
     private final static int CURRENT_NUMBER = 4;
     private final static int INFO = 5;
+    private final static int CHOOSING_INFO = 6;
+    private final static int CHOOSED_CLASS = 7;
     private final static String[] CLASS_START_TIME = {"8:00", "08:55", "10:10", "11:05", "14:00", "14:55", "16:10", "17:05", "18:30", "19:25", "20:20"};
     private final static String[] CLASS_END_TIME = {"08:45", "09:40", "10:55", "11:50", "14:45", "15:40", "16:55", "17:50", "19:15", "20:10", "21:05"};
     private final static Map<String, String> CLASS_SORT = new HashMap<String, String>() {{
@@ -258,7 +262,6 @@ public class DataManager {
     private ArrayList<Integer> classColors;
     private ArrayList<ClassForChoose> classForChooses;
     private boolean updated;
-    private boolean classGot;
     private ClassesCurrentNumberUpdater currentNumberUpdater;
     private Handler handler = new Handler() {
         @Override
@@ -286,13 +289,75 @@ public class DataManager {
         }
     };
 
-    public interface updateListener{
+    public interface UpdateListener{
         void update();
+    }
+
+    public interface ChoosingInfoUpdateListener{
+        void done(ChoosingInfo choosingInfo);
     }
 
     public DataManager(Context context) {
         currentNumberUpdater = new ClassesCurrentNumberUpdater();
         this.context = context;
+    }
+
+    public void getChoosingInfo(final ChoosingInfoUpdateListener updateListener){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpRequester httpRequester = new HttpRequester();
+                httpRequester.setChoose(true);
+                Document doc=httpRequester.get("http://xk.tjut.edu.cn/xsxk/index.xk", "http://xk.tjut.edu.cn/xsxk/logout.xk", false);
+                doGetChoosingInfo(doc,updateListener);
+            }
+        });
+    }
+
+    private void doGetChoosingInfo(Document doc,ChoosingInfoUpdateListener updateListener){
+        ChoosingInfo result = new ChoosingInfo();
+        int count=0;
+        int credit=0;
+        for(Node i:doc.child(0).child(1).childNodes()){
+            count++;
+            if(i.nodeName().equals("#comment")){
+                List<Node> list =i.parentNode().childNodes();
+                switch (i.toString()){
+                    case "\n<!-- 加载学生基本信息 -->":
+                        result.setGrade(list.get(count+2).toString().split("'")[3]);
+                        result.setClasses(list.get(count+3).toString().split("'")[3]);
+                        result.setDepartment(CLASS_DEPARTMENT.get(list.get(count+4).toString().split("'")[3]));
+                        result.setMajor(MAJOR.get(list.get(count+5).toString().split("'")[3]));
+                        result.setStdID(list.get(count+8).toString().split("'")[3]);
+                        result.setName(list.get(count+10).toString().split("'")[3]);
+                        result.setDegree(list.get(count+13).toString().split("'")[3]);
+                        break;
+                    case "\n<!-- 加载选课设置信息 -->":
+                        result.setMaximumCredit(Integer.parseInt(list.get(count+15).toString().split("'")[3]));
+                        break;
+                    case "\n<!-- 加载学生个人方案基本信息 -->":
+                        result.setLimitCredit(Integer.parseInt(list.get(count).toString().split("'")[17]));
+                        break;
+                    case "\n<!-- 加载可选课轮次基本信息 -->":
+                        result.setStartTime(list.get(count).toString().split("'")[13]);
+                        result.setEndTime(list.get(count).toString().split("'")[15]);
+                        break;
+                    case "\n<!-- 加载当前已选教学班数据 -->":
+                        for(int j=0;;j++){
+                            if(list.get(count+j).nodeName().equals("#comment")){
+                                break;
+                            }
+                            if(list.get(count+j).toString().split("'").length==53){
+                                credit+=Double.parseDouble(list.get(count+j).toString().split("'")[21]);
+                            }
+                        }
+                        result.setNowCredit(credit);
+                        break;
+                }
+            }
+        }
+        Log.d("got ChoosingInfo",result.toString());
+        updateListener.done(result);
     }
 
     public void updateInfo(){
@@ -349,10 +414,6 @@ public class DataManager {
 
     public ArrayList<ClassForChoose> getClassForChooses() {
         return classForChooses;
-    }
-
-    public boolean isClassGot() {
-        return classGot;
     }
 
     private void doUpdatePublicClasses(Document doc) {
@@ -737,7 +798,7 @@ public class DataManager {
         }
     }
 
-    private class ClassesCurrentNumberUpdater implements updateListener{
+    private class ClassesCurrentNumberUpdater implements UpdateListener{
         @Override
         public void update() {
             updateCurrentNumber();
