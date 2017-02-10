@@ -1,6 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="AppTheme.NavBar" parent="AppTheme">
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="AppTheme.ClassActivity">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+    <style name="Grey" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/grey</item>
+        <item name="colorPrimaryDark">@color/greyDark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/greyDark</item>
+    </style>
+
+    <style name="Color0" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor0</item>
+        <item name="colorPrimaryDark">@color/classColor0Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor0Dark</item>
+    </style>
+
+    <style name="Color1" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor1</item>
+        <item name="colorPrimaryDark">@color/classColor1Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor1Dark</item>
+    </style>
+
+    <style name="Color2" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor2</item>
+        <item name="colorPrimaryDark">@color/classColor2Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor2Dark</item>
+    </style>
+
+    <style name="Color3" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor3</item>
+        <item name="colorPrimaryDark">@color/classColor3Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor3Dark</item>
+    </style>
+
+    <style name="Color4" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor4</item>
+        <item name="colorPrimaryDark">@color/classColor4Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor4Dark</item>
+    </style>
+
+    <style name="Color5" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor5</item>
+        <item name="colorPrimaryDark">@color/classColor5Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor5Dark</item>
+    </style>
+
+    <style name="Color6" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor6</item>
+        <item name="colorPrimaryDark">@color/classColor6Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor6Dark</item>
+    </style>
+
+    <style name="Color7" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor7</item>
+        <item name="colorPrimaryDark">@color/classColor7Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor7Dark</item>
+    </style>
+
+    <style name="Color8" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor8</item>
+        <item name="colorPrimaryDark">@color/classColor8Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor8Dark</item>
+    </style>
+
+    <style name="Color9" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor9</item>
+        <item name="colorPrimaryDark">@color/classColor9Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor9Dark</item>
+    </style>
+
+    <style name="Color10" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor10</item>
+        <item name="colorPrimaryDark">@color/classColor10Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor10Dark</item>
+    </style>
+
+    <style name="Color11" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor11</item>
+        <item name="colorPrimaryDark">@color/classColor11Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor11Dark</item>
+    </style>
+
+    <style name="Color12" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor12</item>
+        <item name="colorPrimaryDark">@color/classColor12Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor12Dark</item>
+    </style>
+
+    <style name="Color13" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor13</item>
+        <item name="colorPrimaryDark">@color/classColor13Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor13Dark</item>
+    </style>
+
+    <style name="Color14" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor14</item>
+        <item name="colorPrimaryDark">@color/classColor14Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor14Dark</item>
+    </style>
+
+    <style name="Color15" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor15</item>
+        <item name="colorPrimaryDark">@color/classColor15Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor15Dark</item>
+    </style>
+
+    <style name="Color16" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor16</item>
+        <item name="colorPrimaryDark">@color/classColor16Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor16Dark</item>
+    </style>
+
+    <style name="Color17" parent="AppTheme.ClassActivity">
+        <item name="colorPrimary">@color/classColor17</item>
+        <item name="colorPrimaryDark">@color/classColor17Dark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/classColor17Dark</item>
     </style>
 </resources>
