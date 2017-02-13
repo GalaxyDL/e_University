@@ -21,6 +21,7 @@
     <string name="drawer_search_score">考试成绩</string>
 
     <string name="drawer_choose_title">选课</string>
+    <string name="drawer_choose_state">概况</string>
     <string name="drawer_choose_public">公选课</string>
     <string name="drawer_choose_recommend">推荐选课</string>
     <string name="drawer_choose_sports">体育课</string>
@@ -28,6 +29,10 @@
     <string name="drawer_me_title">个人</string>
     <string name="drawer_me_account">个人信息</string>
     <string name="drawer_me_login">更新数据</string>
+
+    <string name="base_info">个人信息</string>
+    <string name="now_state">选课开放情况</string>
+    <string name="chosen_count">已选课程统计</string>
 
     <string name="drawer_info">关于</string>
 

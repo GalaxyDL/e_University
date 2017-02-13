@@ -21,6 +21,8 @@ public class PublicClassFragment extends ChoosingClassesFragment{
     private RecyclerView recyclerView;
     private ClassForChooseAdapter adapter;
 
+    private LoginHelper loginHelper;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,20 +30,21 @@ public class PublicClassFragment extends ChoosingClassesFragment{
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewOfChoose);
         adapter = new ClassForChooseAdapter(getContext());
 
-        dataManager.updatePublicClasses(this);
-
-
-//        classForChooses=dataManager.getClassForChooses();
+        loginHelper = new LoginHelper(getContext(), getActivity(), new LoginHelper.LoginListener() {
+            @Override
+            public void done() {
+                updateView();
+            }
+        });
+        loginHelper.login();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-//        for(ClassForChoose classForChoose:classForChooses){
-//            adapter.addClass(classForChoose);
-//        }
-
-
-
         return view;
+    }
+
+    private void updateView(){
+        dataManager.updatePublicClasses(this);
     }
 
     @Override

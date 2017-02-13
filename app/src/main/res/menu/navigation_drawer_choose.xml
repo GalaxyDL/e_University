@@ -6,16 +6,22 @@
             <menu>
                 <item
                     android:checked="true"
+                    android:id="@+id/choosingState"
+                    android:icon="@drawable/information"
+                    android:title="@string/drawer_choose_state"
+                    />
+                <item
+
                     android:id="@+id/recommendClass"
-                    android:icon="@drawable/table"
+                    android:icon="@drawable/library_books"
                     android:title="@string/drawer_choose_recommend"/>
                 <item
                     android:id="@+id/sportsClass"
-                    android:icon="@drawable/book_multiple"
+                    android:icon="@drawable/run"
                     android:title="@string/drawer_choose_sports"/>
                 <item
                     android:id="@+id/publicClass"
-                    android:icon="@drawable/code_string"
+                    android:icon="@drawable/checkbox_marked"
                     android:title="@string/drawer_choose_public"/>
             </menu>
         </item>

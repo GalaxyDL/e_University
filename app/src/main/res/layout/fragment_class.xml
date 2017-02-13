@@ -38,7 +38,6 @@
         android:id="@+id/floatButtonOfClass"
         app:layout_anchor="@id/linear"
         app:layout_anchorGravity="bottom|right"
-        app:layout_behavior=""
         />
 
 

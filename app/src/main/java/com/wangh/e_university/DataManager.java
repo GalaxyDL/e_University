@@ -1,5 +1,7 @@
 package com.wangh.e_university;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -25,15 +27,15 @@ public class DataManager {
     private final static int CURRENT_NUMBER = 4;
     private final static int INFO = 5;
     private final static int CHOOSING_INFO = 6;
-    private final static int CHOOSED_CLASS = 7;
+    private final static int CHOSE_CLASS = 7;
 
 
-    private static boolean isGetNowScore=true;
+    private static boolean isGetNowScore = true;
 
     private SharedPreferences sharedPreferences;
     private DatabaseManager databaseManager;
     private Context context;
-    private ChoosingClassesFragment targetFrament;
+    private ChoosingClassesFragment targetFragment;
     private Date date;
     private int classCount;
     private ArrayList<String> classTitles;
@@ -61,72 +63,114 @@ public class DataManager {
                     doUpdateCurrentNumber((String) msg.obj);
                     break;
                 case INFO:
-                    doUpdateInfo((Document)msg.obj);
+                    doUpdateInfo((Document) msg.obj);
                     break;
             }
         }
     };
-
-    public interface UpdateListener{
-        void update();
-    }
-
-    public interface ChoosingInfoUpdateListener{
-        void done(ChoosingInfo choosingInfo);
-    }
 
     public DataManager(Context context) {
         currentNumberUpdater = new ClassesCurrentNumberUpdater();
         this.context = context;
     }
 
-    public void getChoosingInfo(final ChoosingInfoUpdateListener updateListener){
+    public static void setIsGetNowScore(boolean isGetNowScore) {
+        DataManager.isGetNowScore = isGetNowScore;
+    }
+
+    public static boolean isGetNowScore() {
+        return isGetNowScore;
+    }
+
+    public void getChoosedClass(final ChoseClassesUpdateListener updateListener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 HttpRequester httpRequester = new HttpRequester();
                 httpRequester.setChoose(true);
-                Document doc=httpRequester.get("http://xk.tjut.edu.cn/xsxk/index.xk", "http://xk.tjut.edu.cn/xsxk/logout.xk", false);
-                doGetChoosingInfo(doc,updateListener);
+                Document doc = httpRequester.get("http://xk.tjut.edu.cn/xsxk/index.xk",
+                        "http://xk.tjut.edu.cn/xsxk/logout.xk",
+                        false);
+                doGetChoosedClass(doc, updateListener);
             }
-        });
+        }).start();
     }
 
-    private void doGetChoosingInfo(Document doc,ChoosingInfoUpdateListener updateListener){
-        ChoosingInfo result = new ChoosingInfo();
-        int count=0;
-        int credit=0;
-        for(Node i:doc.child(0).child(1).childNodes()){
+    private void doGetChoosedClass(Document doc, ChoseClassesUpdateListener updateListener) {
+        List<ClassForChoose> result = new ArrayList<ClassForChoose>();
+        int count = 0;
+        for (Node node : doc.childNodes()) {
             count++;
-            if(i.nodeName().equals("#comment")){
-                List<Node> list =i.parentNode().childNodes();
-                switch (i.toString()){
+            if (node.nodeName().equals("#comment")) {
+                if (node.toString().equals("\n<!-- 加载当前已选教学班数据 -->")) {
+                    List<Node> list = doc.childNodes();
+                    for (int i = 0; ; i++) {
+                        if (list.get(count + i).nodeName().equals("#comment")) {
+                            break;
+                        }
+                        if (list.get(count + i).toString().split("'").length == 53) {
+                            ClassForChoose aClass = new ClassForChoose();
+                            aClass.parseClass(list.get(count + i).toString().split("'"));
+                            result.add(aClass);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        updateListener.done(result);
+    }
+
+    public void getChoosingInfo(final ChoosingInfoUpdateListener updateListener) {
+        Log.d("get","getChoosingInfo");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpRequester httpRequester = new HttpRequester();
+                httpRequester.setChoose(true);
+                Document doc = httpRequester.get("http://xk.tjut.edu.cn/xsxk/index.xk",
+                        "http://xk.tjut.edu.cn/xsxk/logout.xk",
+                        false);
+                doGetChoosingInfo(doc, updateListener);
+            }
+        }).start();
+    }
+
+    private void doGetChoosingInfo(Document doc, ChoosingInfoUpdateListener updateListener) {
+        ChoosingInfo result = new ChoosingInfo();
+        int count = 0;
+        int credit = 0;
+        for (Node i : doc.child(0).child(1).childNodes()) {
+            count++;
+            if (i.nodeName().equals("#comment")) {
+                List<Node> list = i.parentNode().childNodes();
+                switch (i.toString()) {
                     case "\n<!-- 加载学生基本信息 -->":
-                        result.setGrade(list.get(count+2).toString().split("'")[3]);
-                        result.setClasses(list.get(count+3).toString().split("'")[3]);
-                        result.setDepartment(ClassInfoConst.CLASS_DEPARTMENT.get(list.get(count+4).toString().split("'")[3]));
-                        result.setMajor(ClassInfoConst.MAJOR.get(list.get(count+5).toString().split("'")[3]));
-                        result.setStdID(list.get(count+8).toString().split("'")[3]);
-                        result.setName(list.get(count+10).toString().split("'")[3]);
-                        result.setDegree(list.get(count+13).toString().split("'")[3]);
+                        result.setGrade(list.get(count + 3).toString().split("'")[3]);
+                        result.setClasses(list.get(count + 5).toString().split("'")[3]);
+                        result.setDepartment(ClassInfoConst.CLASS_DEPARTMENT.get(list.get(count + 9).toString().split("'")[3]));
+                        result.setMajor(ClassInfoConst.MAJOR.get(list.get(count + 11).toString().split("'")[3]));
+                        result.setStdID(list.get(count + 17).toString().split("'")[3]);
+                        result.setName(list.get(count + 21).toString().split("'")[3]);
+                        result.setDegree(list.get(count + 29).toString().split("'")[3]);
                         break;
                     case "\n<!-- 加载选课设置信息 -->":
-                        result.setMaximumCredit(Integer.parseInt(list.get(count+15).toString().split("'")[3]));
+                        result.setMaximumCredit(Integer.parseInt(list.get(count + 31).toString().split("'")[3]));
                         break;
                     case "\n<!-- 加载学生个人方案基本信息 -->":
-                        result.setLimitCredit(Integer.parseInt(list.get(count).toString().split("'")[17]));
+                        result.setLimitCredit(Integer.parseInt(list.get(count+1).toString().split("'")[17]));
                         break;
                     case "\n<!-- 加载可选课轮次基本信息 -->":
-                        result.setStartTime(list.get(count).toString().split("'")[13]);
-                        result.setEndTime(list.get(count).toString().split("'")[15]);
+                        result.setStartTime(list.get(count+1).toString().split("'")[13]);
+                        result.setEndTime(list.get(count+1).toString().split("'")[15]);
                         break;
                     case "\n<!-- 加载当前已选教学班数据 -->":
-                        for(int j=0;;j++){
-                            if(list.get(count+j).nodeName().equals("#comment")){
+                        for (int j = 1; ; j+=2) {
+                            if (list.get(count + j).nodeName().equals("#comment")) {
                                 break;
                             }
-                            if(list.get(count+j).toString().split("'").length==53){
-                                credit+=Double.parseDouble(list.get(count+j).toString().split("'")[21]);
+                            if (list.get(count + j).toString().split("'").length == 53) {
+                                credit += Double.parseDouble(list.get(count + j).toString().split("'")[21]);
                             }
                         }
                         result.setNowCredit(credit);
@@ -134,39 +178,39 @@ public class DataManager {
                 }
             }
         }
-        Log.d("got ChoosingInfo",result.toString());
+        Log.d("got ChoosingInfo", result.toString());
         updateListener.done(result);
     }
 
-    public void updateInfo(){
+    public void updateInfo() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 HttpRequester httpRequester = new HttpRequester();
-                Message msg= new Message();
-                msg.what=INFO;
-                msg.obj=httpRequester.get("http://ssfw.tjut.edu.cn/ssfw/xjgl/jbxx.do");
+                Message msg = new Message();
+                msg.what = INFO;
+                msg.obj = httpRequester.get("http://ssfw.tjut.edu.cn/ssfw/xjgl/jbxx.do");
                 handler.sendMessage(msg);
             }
         }).start();
     }
 
-    private void doUpdateInfo(Document doc){
+    private void doUpdateInfo(Document doc) {
         sharedPreferences = context.getSharedPreferences("account", Context.MODE_APPEND);
         Element element = doc.getElementById("yxdm");
         SharedPreferences.Editor editor = sharedPreferences.edit();
 //        Log.d("doUpdateInfo",CLASS_DEPARTMENT.get(element.val()));
-        editor.putString("department",ClassInfoConst.CLASS_DEPARTMENT.get(element.val()));
+        editor.putString("department", ClassInfoConst.CLASS_DEPARTMENT.get(element.val()));
         element = doc.getElementById("zydm");
 //        Log.d("doUpdateInfo",MAJOR.get(element.val()));
-        editor.putString("major",ClassInfoConst.MAJOR.get(element.val()));
+        editor.putString("major", ClassInfoConst.MAJOR.get(element.val()));
         editor.apply();
     }
 
     public void updatePublicClasses(ChoosingClassesFragment fragment) {
         Log.d("get public classes", "start");
         updated = false;
-        targetFrament=fragment;
+        targetFragment = fragment;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -232,7 +276,7 @@ public class DataManager {
                     classForChoose = classForChooses.get(classCount - 1);
                     classForChoose.addTime(lines);
                 }
-                Log.d("lines", classForChooses.get(classCount-1).toString());
+                Log.d("lines", classForChooses.get(classCount - 1).toString());
             }
         }
         for (int i = 0; i < classForChooses.size(); i++) {
@@ -271,7 +315,7 @@ public class DataManager {
                 }
             }
         }
-        targetFrament.update();
+        targetFragment.update();
     }
 
     public void updateExam() {
@@ -284,10 +328,10 @@ public class DataManager {
                 String postContent = "xnxqdm=";
                 if (date.getMonth() <= 8 && date.getMonth() >= 2) {
                     postContent += (date.getYear() - 1) + "-" + date.getYear() + "-2";
-                } else if(date.getMonth()>8){
+                } else if (date.getMonth() > 8) {
                     postContent += date.getYear() + "-" + (date.getYear() + 1) + "-1";
-                } else if(date.getMonth()<2){
-                    postContent += (date.getYear()-1) + "-" + date.getYear() + "-1";
+                } else if (date.getMonth() < 2) {
+                    postContent += (date.getYear() - 1) + "-" + date.getYear() + "-1";
                 }
                 msg.what = EXAM;
                 msg.obj = httpRequester.post("http://ssfw.tjut.edu.cn/ssfw/xsks/kcxx.do", postContent, true);
@@ -323,13 +367,13 @@ public class DataManager {
                 Message msg = new Message();
                 date = new Date();
                 String postContent = "qXndm_ys=";
-                if(isGetNowScore){
+                if (isGetNowScore) {
                     if (date.getMonth() <= 8 && date.getMonth() >= 2) {
                         postContent += (date.getYear() - 1) + "-" + date.getYear();
-                    } else if(date.getMonth()>8){
+                    } else if (date.getMonth() > 8) {
                         postContent += date.getYear() + "-" + (date.getYear() + 1);
-                    } else if(date.getMonth()<2){
-                        postContent += (date.getYear()-1) + "-" + date.getYear();
+                    } else if (date.getMonth() < 2) {
+                        postContent += (date.getYear() - 1) + "-" + date.getYear();
                     }
                     postContent += "&qXqdm_ys=";
                     if (date.getMonth() <= 8 && date.getMonth() >= 2) {
@@ -337,13 +381,13 @@ public class DataManager {
                     } else {
                         postContent += 1;
                     }
-                }else{
+                } else {
                     if (date.getMonth() <= 8 && date.getMonth() >= 2) {
                         postContent += (date.getYear() - 1) + "-" + date.getYear();
-                    } else if(date.getMonth()>8){
-                        postContent += (date.getYear()-1) + "-" + date.getYear();
-                    } else if(date.getMonth()<2){
-                        postContent += (date.getYear()-2) + "-" + (date.getYear()-1);
+                    } else if (date.getMonth() > 8) {
+                        postContent += (date.getYear() - 1) + "-" + date.getYear();
+                    } else if (date.getMonth() < 2) {
+                        postContent += (date.getYear() - 2) + "-" + (date.getYear() - 1);
                     }
                     postContent += "&qXqdm_ys=";
                     if (date.getMonth() <= 8 && date.getMonth() >= 2) {
@@ -370,7 +414,7 @@ public class DataManager {
     private void doUpdateScore(Document doc) {
         databaseManager = new DatabaseManager(context);
         Element table = doc.getElementsByTag("tbody").get(7);
-        if(table!=null){
+        if (table != null) {
             databaseManager.deleteAllScore();
 
             ScoreItem aScoreItem;
@@ -399,22 +443,22 @@ public class DataManager {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                    HttpRequester httpRequester = new HttpRequester();
-                    Message msg = new Message();
-                    date = new Date();
-                    String urlContent = "";
-                    if (date.getMonth() <= 8 && date.getMonth() >= 2) {
-                        urlContent += (date.getYear() - 1) + "-" + date.getYear() + "-2";
-                    } else if(date.getMonth()>8){
-                        urlContent += date.getYear() + "-" + (date.getYear() + 1) + "-1";
-                    } else if(date.getMonth()<2){
-                        urlContent += (date.getYear()-1) + "-" + date.getYear() + "-1";
-                    }
+                HttpRequester httpRequester = new HttpRequester();
+                Message msg = new Message();
+                date = new Date();
+                String urlContent = "";
+                if (date.getMonth() <= 8 && date.getMonth() >= 2) {
+                    urlContent += (date.getYear() - 1) + "-" + date.getYear() + "-2";
+                } else if (date.getMonth() > 8) {
+                    urlContent += date.getYear() + "-" + (date.getYear() + 1) + "-1";
+                } else if (date.getMonth() < 2) {
+                    urlContent += (date.getYear() - 1) + "-" + date.getYear() + "-1";
+                }
 
-                    msg.what = CLASS_TABLE;
-                    msg.obj = httpRequester.get("http://ssfw.tjut.edu.cn/ssfw/pkgl/kcbxx/4/" + urlContent + ".do");
+                msg.what = CLASS_TABLE;
+                msg.obj = httpRequester.get("http://ssfw.tjut.edu.cn/ssfw/pkgl/kcbxx/4/" + urlContent + ".do");
 //                    msg.obj = httpRequester.get("http://ssfw.tjut.edu.cn/ssfw/pkgl/kcbxx/4/2016-2017-1.do");
-                    handler.sendMessage(msg);
+                handler.sendMessage(msg);
             }
         }).start();
     }
@@ -535,18 +579,22 @@ public class DataManager {
         }
     }
 
-    private class ClassesCurrentNumberUpdater implements UpdateListener{
+    public interface UpdateListener {
+        void update();
+    }
+
+    public interface ChoosingInfoUpdateListener {
+        void done(ChoosingInfo choosingInfo);
+    }
+
+    public interface ChoseClassesUpdateListener {
+        void done(List<ClassForChoose> result);
+    }
+
+    private class ClassesCurrentNumberUpdater implements UpdateListener {
         @Override
         public void update() {
             updateCurrentNumber();
         }
-    }
-
-    public static void setIsGetNowScore(boolean isGetNowScore) {
-        DataManager.isGetNowScore = isGetNowScore;
-    }
-
-    public static boolean isGetNowScore() {
-        return isGetNowScore;
     }
 }

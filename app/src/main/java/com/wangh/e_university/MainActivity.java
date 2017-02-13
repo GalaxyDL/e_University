@@ -42,11 +42,13 @@ public class MainActivity extends AppCompatActivity {
     private ClassFragment classFragment;
     private ExamFragment examFragment;
     private ScoreFragment scoreFragment;
-    private ChooseFragment chooseFragment;
     private LoginFragment loginFragment;
     private MeFragment meFragment;
-    private LoginChooseFragment loginChooseFragment;
+    private ChoosingIndexFragment choosingIndexFragment;
     private ChooseNotTimeFragment chooseNotTimeFragment;
+    private PublicClassFragment publicClassFragment;
+    private RecommendClassFragment recommendClassFragment;
+    private SportsClassFragment sportsClassFragment;
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -136,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.choose:
                         navigationView.getMenu().clear();
                         navigationView.inflateMenu(R.menu.navigation_drawer_choose);
-//                        changeToChooseLogin();
-                        changeToChooseNotTime();
+                        changeToChooseIndex();
+//                        changeToChooseNotTime();
                         break;
                     case R.id.me:
                         navigationView.getMenu().clear();
@@ -182,23 +184,53 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void changeToChooseLogin() {
+    private void changeToChooseIndex() {
         toolbar.setTitle("选课");
         fragmentTransaction = fragmentManager.beginTransaction();
-        if (loginChooseFragment == null) {
-            loginChooseFragment = new LoginChooseFragment();
+        if (choosingIndexFragment == null) {
+            choosingIndexFragment = new ChoosingIndexFragment();
         }
-        fragmentTransaction.replace(R.id.frameLayout, loginChooseFragment);
+        fragmentTransaction.replace(R.id.frameLayout, choosingIndexFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void changeToPublic(){
+        toolbar.setTitle("选课");
+        fragmentTransaction = fragmentManager.beginTransaction();
+        if (publicClassFragment == null) {
+            publicClassFragment = new PublicClassFragment();
+        }
+        fragmentTransaction.replace(R.id.frameLayout, publicClassFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void changeToRecommend(){
+        toolbar.setTitle("选课");
+        fragmentTransaction = fragmentManager.beginTransaction();
+        if (publicClassFragment == null) {
+            publicClassFragment = new PublicClassFragment();
+        }
+        fragmentTransaction.replace(R.id.frameLayout, publicClassFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void changeToSports(){
+        toolbar.setTitle("选课");
+        fragmentTransaction = fragmentManager.beginTransaction();
+        if (sportsClassFragment == null) {
+            sportsClassFragment = new SportsClassFragment();
+        }
+        fragmentTransaction.replace(R.id.frameLayout, sportsClassFragment);
         fragmentTransaction.commit();
     }
 
     private void changeToChooseNotTime() {
         toolbar.setTitle("选课");
         fragmentTransaction = fragmentManager.beginTransaction();
-        if (chooseNotTimeFragment == null) {
-            chooseNotTimeFragment = new ChooseNotTimeFragment();
+        if (recommendClassFragment == null) {
+            recommendClassFragment = new RecommendClassFragment();
         }
-        fragmentTransaction.replace(R.id.frameLayout, chooseNotTimeFragment);
+        fragmentTransaction.replace(R.id.frameLayout, recommendClassFragment);
         fragmentTransaction.commit();
     }
 
@@ -248,17 +280,29 @@ public class MainActivity extends AppCompatActivity {
                         navigationView.getMenu().findItem(R.id.classTable).setChecked(false);
                         changeToScore();
                         break;
+                    case R.id.choosingState:
+                        navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.sportsClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.recommendClass).setChecked(false);
+                        changeToChooseIndex();
+                        break;
                     case R.id.sportsClass:
                         navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.recommendClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.choosingState).setChecked(false);
+                        changeToSports();
                         break;
                     case R.id.publicClass:
                         navigationView.getMenu().findItem(R.id.sportsClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.recommendClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.choosingState).setChecked(false);
+                        changeToPublic();
                         break;
                     case R.id.recommendClass:
                         navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.sportsClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.choosingState).setChecked(false);
+                        changeToRecommend();
                         break;
                     case R.id.account:
                         navigationView.getMenu().findItem(R.id.login).setChecked(false);
