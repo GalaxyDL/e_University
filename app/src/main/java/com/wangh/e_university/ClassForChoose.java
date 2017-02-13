@@ -161,6 +161,48 @@ public class ClassForChoose {
         this.week = week;
     }
 
+    public void parseClass(String[] lines){
+        idForChoose=lines[3];
+        id=lines[5];
+        title=lines[7];
+        hours=lines[13];
+        sort=ClassInfoConst.CLASS_SORT.get(lines[21]);
+        nature=ClassInfoConst.CLASS_NATURE.get(lines[23]);
+        department=ClassInfoConst.CLASS_DEPARTMENT.get(lines[27]);
+        try {
+            credit=Integer.parseInt(lines[29]);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        teacher=lines[31];
+        try {
+            maximumNumber=Integer.parseInt(lines[33]);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        category=ClassInfoConst.CLASS_CATEGORY.get(lines[45]);
+    }
+
+    public void addTime(String[] lines){
+        week.add(lines[5]);
+        try {
+            data.add(Integer.parseInt(lines[7]));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        try {
+            timeStart.add(Integer.parseInt(lines[9]));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        try {
+            timeEnd.add(Integer.parseInt(lines[11]));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        location.add(lines[13]);
+    }
+
     @Override
     public String toString() {
         return "ClassForChoose{" +

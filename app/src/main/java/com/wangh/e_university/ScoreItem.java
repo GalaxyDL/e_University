@@ -1,5 +1,7 @@
 package com.wangh.e_university;
 
+import org.jsoup.nodes.Element;
+
 /**
  * Created by wangh on 2016/8/11.
  */
@@ -40,6 +42,12 @@ public class ScoreItem {
 
     public void setCredit(double credit) {
         this.credit = credit;
+    }
+
+    public void parseScore(Element score){
+        title=score.child(3).text();
+        credit=Double.parseDouble(score.child(7).text().replace("\n", "").replace(" ", ""));
+        this.score=Double.parseDouble(score.child(8).child(0).child(0).text().replace("&nbsp;", "").replace("\n", "").replace(" ", ""));
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.wangh.e_university;
 
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+
 /**
  * Created by wangh on 2016/8/11.
  */
@@ -79,6 +82,15 @@ public class ExamItem {
 
     public int getColorID() {
         return colorID;
+    }
+
+    public void parseExam(Element exam){
+        title=exam.child(2).text();
+        teacher=exam.child(4).text();
+        credit=Integer.parseInt(exam.child(5).text());
+        time=exam.child(6).text();
+        location=exam.child(7).text();
+        modus=exam.child(8).text();
     }
 
     @Override
