@@ -7,11 +7,13 @@
                 <item
                     android:checked="true"
                     android:id="@+id/choosingState"
-                    android:icon="@drawable/information"
-                    android:title="@string/drawer_choose_state"
-                    />
+                    android:icon="@drawable/ic_clipboard_text_white_24dp"
+                    android:title="@string/drawer_choose_state" />
                 <item
-
+                    android:id="@+id/chosenClass"
+                    android:icon="@drawable/checkbox_marked"
+                    android:title="@string/drawer_choose_chosen"/>
+                <item
                     android:id="@+id/recommendClass"
                     android:icon="@drawable/library_books"
                     android:title="@string/drawer_choose_recommend"/>

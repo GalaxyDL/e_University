@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -73,7 +71,6 @@ public class ChoosingIndexFragment extends Fragment {
             @Override
             public void done(ChoosingInfo choosingInfo) {
                 progressDialog.dismiss();
-                nestedScrollView.setVisibility(View.VISIBLE);
                 baseInfoAdapter.addInfo(new InfoItem("姓名",choosingInfo.getName()));
                 baseInfoAdapter.addInfo(new InfoItem("年级",choosingInfo.getGrade()));
                 baseInfoAdapter.addInfo(new InfoItem("学院",choosingInfo.getDepartment()));
@@ -97,6 +94,7 @@ public class ChoosingIndexFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                nestedScrollView.setVisibility(View.VISIBLE);
                 baseInfoRV.setAdapter(baseInfoAdapter);
                 nowStateRV.setAdapter(nowStateAdapter);
                 chosenCountRV.setAdapter(chosenCountAdapter);

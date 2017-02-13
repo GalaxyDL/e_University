@@ -24,6 +24,8 @@ public class ClassForChoose {
     private int currentNumber;
     private String idForChoose;//选课号
     private String id;
+    private String[] targetClasses;
+    private String targetSex;
 
     public String getTitle() {
         return title;
@@ -181,6 +183,10 @@ public class ClassForChoose {
             e.printStackTrace();
         }
         category=ClassInfoConst.CLASS_CATEGORY.get(lines[45]);
+        if(lines.length==53){
+            targetClasses=lines[49].split(",");
+            targetSex=lines[51];
+        }
     }
 
     public void addTime(String[] lines){

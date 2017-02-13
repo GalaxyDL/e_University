@@ -26,9 +26,12 @@ public class DataManager {
     private final static int PUBLIC_CLASSES = 3;
     private final static int CURRENT_NUMBER = 4;
     private final static int INFO = 5;
-    private final static int CHOOSING_INFO = 6;
-    private final static int CHOSE_CLASS = 7;
+    private final static int SPORTS_CLASSES = 6;
+    private final static int RECOMMEND_CLASSES = 7;
 
+    public final static String PUBLIC = "Qxgxk";
+    public final static String SPORTS = "Tykxk";
+    public final static String RECOMMEND = "Tjxk";
 
     private static boolean isGetNowScore = true;
 
@@ -65,6 +68,12 @@ public class DataManager {
                 case INFO:
                     doUpdateInfo((Document) msg.obj);
                     break;
+                case SPORTS_CLASSES:
+                    doUpdateSportsClasses((Document) msg.obj);
+                    break;
+                case RECOMMEND_CLASSES:
+                    doUpdateRecommendClasses((Document) msg.obj);
+                    break;
             }
         }
     };
@@ -82,7 +91,31 @@ public class DataManager {
         return isGetNowScore;
     }
 
-    public void getChoosedClass(final ChoseClassesUpdateListener updateListener) {
+    public void chooseClass(final ClassForChoose classForChoose, final String sort, final int wish, final ChooseClassListener listener){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpRequester httpRequester = new HttpRequester();
+                httpRequester.setChoose(true);
+                String url = "http://xk.tjut.edu.cn/xsxk/xkOper.xk?method=handle" +
+                        sort +
+                        "&jxbid=" +
+                        classForChoose.getIdForChoose() +
+                        "&glJxbid=&xkzy=" +
+                        wish;
+                //http://xk.tjut.edu.cn/xsxk/xkOper.xk?method=handleQxgxk&jxbid=201620172313001501&glJxbid=&xkzy=1
+                String result = httpRequester.getString(url);
+                if("true".equals(result.split(":")[1].split(",")[0])){
+                    listener.done(true);
+                }else{
+                    listener.done(false);
+                }
+
+            }
+        }).start();
+    }
+
+    public void getChosenClass(final ChosenClassesUpdateListener updateListener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -96,21 +129,22 @@ public class DataManager {
         }).start();
     }
 
-    private void doGetChoosedClass(Document doc, ChoseClassesUpdateListener updateListener) {
+    private void doGetChoosedClass(Document doc, ChosenClassesUpdateListener updateListener) {
         List<ClassForChoose> result = new ArrayList<ClassForChoose>();
         int count = 0;
-        for (Node node : doc.childNodes()) {
+        for (Node node : doc.child(0).child(1).childNodes()) {
             count++;
             if (node.nodeName().equals("#comment")) {
                 if (node.toString().equals("\n<!-- 加载当前已选教学班数据 -->")) {
-                    List<Node> list = doc.childNodes();
-                    for (int i = 0; ; i++) {
+                    List<Node> list = doc.child(0).child(1).childNodes();
+                    for (int i = 1; ; i++) {
                         if (list.get(count + i).nodeName().equals("#comment")) {
                             break;
                         }
                         if (list.get(count + i).toString().split("'").length == 53) {
                             ClassForChoose aClass = new ClassForChoose();
                             aClass.parseClass(list.get(count + i).toString().split("'"));
+                            Log.d("got chosen class",aClass.toString());
                             result.add(aClass);
                         }
                     }
@@ -207,9 +241,110 @@ public class DataManager {
         editor.apply();
     }
 
+    public void updateRecommendClasses(ChoosingClassesFragment fragment){
+        targetFragment = fragment;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpRequester httpRequester = new HttpRequester();
+                httpRequester.setChoose(true);
+                Message msg = new Message();
+                msg.what = RECOMMEND_CLASSES;
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/index.xk", "http://xk.tjut.edu.cn/xsxk/logout.xk", false);
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/main.xk", "http://xk.tjut.edu.cn/xsxk/", false);
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/loadData.xk?method=getXsLoginCnt", "http://xk.tjut.edu.cn/xsxk/main.xk", true);
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/loadData.xk?method=getXksj", "http://xk.tjut.edu.cn/xsxk/main.xk", false);
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/loadData.xk?method=loginCheck", "http://xk.tjut.edu.cn/xsxk/index.xk", false);
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/xkjs.xk?pyfaid=01777&jxqdm=1&data-frameid=main&data-timer=2000&data-proxy=proxy.xk", "http://xk.tjut.edu.cn/xsxk/index.xk", false);
+                msg.obj = httpRequester.get("http://xk.tjut.edu.cn/xsxk/tjxk.xk", "http://xk.tjut.edu.cn/xsxk/xkjs.xk?pyfaid=01482&jxqdm=1&data-frameid=main&data-timer=2000&data-proxy=proxy.xk", true);
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    private void doUpdateRecommendClasses(Document doc){
+        Element line;
+        Elements classes = doc.getElementsByTag("script");
+        String[] lines;
+        String[] temp;
+        ClassForChoose classForChoose;
+        classForChooses = new ArrayList<ClassForChoose>();
+        int classCount = 0;
+
+        for (int i = 0; i < classes.size(); i++) {
+            line = classes.get(i);
+            if (!line.hasAttr("src")) {
+                lines = line.toString().split("'");
+                if (lines.length == 49) {
+                    classCount++;
+                    classForChoose = new ClassForChoose();
+                    classForChoose.parseClass(lines);
+                    classForChooses.add(classForChoose);
+                } else {
+                    classForChoose = classForChooses.get(classCount - 1);
+                    classForChoose.addTime(lines);
+                }
+            }
+        }
+        for (int i = 0; i < classForChooses.size(); i++) {
+            Log.d("got class for choose", classForChooses.get(i).toString());
+        }
+        currentNumberUpdater.update();
+    }
+
+    public void updateSportsClasses(ChoosingClassesFragment fragment){
+        targetFragment = fragment;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpRequester httpRequester = new HttpRequester();
+                httpRequester.setChoose(true);
+                Message msg = new Message();
+                msg.what = SPORTS_CLASSES;
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/index.xk", "http://xk.tjut.edu.cn/xsxk/logout.xk", false);
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/main.xk", "http://xk.tjut.edu.cn/xsxk/", false);
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/loadData.xk?method=getXsLoginCnt", "http://xk.tjut.edu.cn/xsxk/main.xk", true);
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/loadData.xk?method=getXksj", "http://xk.tjut.edu.cn/xsxk/main.xk", false);
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/loadData.xk?method=loginCheck", "http://xk.tjut.edu.cn/xsxk/index.xk", false);
+                httpRequester.get("http://xk.tjut.edu.cn/xsxk/xkjs.xk?pyfaid=01777&jxqdm=1&data-frameid=main&data-timer=2000&data-proxy=proxy.xk", "http://xk.tjut.edu.cn/xsxk/index.xk", false);
+                msg.obj = httpRequester.get("http://xk.tjut.edu.cn/xsxk/tykxk.xk", "http://xk.tjut.edu.cn/xsxk/xkjs.xk?pyfaid=01482&jxqdm=1&data-frameid=main&data-timer=2000&data-proxy=proxy.xk", true);
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    private void doUpdateSportsClasses(Document doc){
+        Element line;
+        Elements classes = doc.getElementsByTag("script");
+        String[] lines;
+        String[] temp;
+        ClassForChoose classForChoose;
+        classForChooses = new ArrayList<ClassForChoose>();
+        int classCount = 0;
+
+        for (int i = 0; i < classes.size(); i++) {
+            line = classes.get(i);
+            if (!line.hasAttr("src")) {
+                lines = line.toString().split("'");
+                if (lines.length == 53) {
+                    classCount++;
+                    classForChoose = new ClassForChoose();
+                    classForChoose.parseClass(lines);
+                    classForChooses.add(classForChoose);
+                } else {
+                    classForChoose = classForChooses.get(classCount - 1);
+                    classForChoose.addTime(lines);
+                }
+            }
+        }
+        for (int i = 0; i < classForChooses.size(); i++) {
+            Log.d("got class for choose", classForChooses.get(i).toString());
+        }
+        currentNumberUpdater.update();
+    }
+
     public void updatePublicClasses(ChoosingClassesFragment fragment) {
         Log.d("get public classes", "start");
-        updated = false;
         targetFragment = fragment;
         new Thread(new Runnable() {
             @Override
@@ -226,10 +361,6 @@ public class DataManager {
                 httpRequester.get("http://xk.tjut.edu.cn/xsxk/xkjs.xk?pyfaid=01777&jxqdm=1&data-frameid=main&data-timer=2000&data-proxy=proxy.xk", "http://xk.tjut.edu.cn/xsxk/index.xk", false);
                 msg.obj = httpRequester.get("http://xk.tjut.edu.cn/xsxk/qxgxk.xk", "http://xk.tjut.edu.cn/xsxk/xkjs.xk?pyfaid=01482&jxqdm=1&data-frameid=main&data-timer=2000&data-proxy=proxy.xk", true);
                 handler.sendMessage(msg);
-//                msg = new Message();
-//                msg.what = PUBLIC_CLASSES;
-//                msg.obj = httpRequester.getString("http://xk.tjut.edu.cn/xsxk/loadData.xk?method=gerJxbXkrs");
-//                handler.sendMessage(msg);
             }
         }).start();
     }
@@ -249,41 +380,22 @@ public class DataManager {
 
         for (int i = 0; i < classes.size(); i++) {
             line = classes.get(i);
-//            Log.d("class for choose",line.toString());
-//            Log.d("class for choose",line.attr("src"));
             if (!line.hasAttr("src")) {
                 lines = line.toString().split("'");
-//                Log.d("class for choose",line.toString());
-//                Log.d("line length",lines.length+"");
                 if (lines.length == 51) {
-                    Log.d("lines", line.toString());
-                    Log.d("lines", lines[1]);
-                    Log.d("lines", lines[3]);
-                    Log.d("lines", lines[5]);
-                    Log.d("lines", lines[29]);
-                    Log.d("lines", lines[33]);
-                    Log.d("lines", lines[45]);
-
                     classCount++;
                     classForChoose = new ClassForChoose();
                     classForChoose.parseClass(lines);
                     classForChooses.add(classForChoose);
                 } else {
-                    Log.d("lines", line.toString());
-                    Log.d("lines", lines[7]);
-                    Log.d("lines", lines[9]);
-                    Log.d("lines", lines[11]);
                     classForChoose = classForChooses.get(classCount - 1);
                     classForChoose.addTime(lines);
                 }
-                Log.d("lines", classForChooses.get(classCount - 1).toString());
             }
         }
         for (int i = 0; i < classForChooses.size(); i++) {
             Log.d("got class for choose", classForChooses.get(i).toString());
         }
-//        updated=true;
-//        notifyAll();
         currentNumberUpdater.update();
     }
 
@@ -587,8 +699,12 @@ public class DataManager {
         void done(ChoosingInfo choosingInfo);
     }
 
-    public interface ChoseClassesUpdateListener {
+    public interface ChosenClassesUpdateListener {
         void done(List<ClassForChoose> result);
+    }
+
+    public interface ChooseClassListener{
+        void done(boolean isSuccess);
     }
 
     private class ClassesCurrentNumberUpdater implements UpdateListener {

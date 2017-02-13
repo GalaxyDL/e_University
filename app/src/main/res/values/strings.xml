@@ -21,6 +21,7 @@
     <string name="drawer_search_score">考试成绩</string>
 
     <string name="drawer_choose_title">选课</string>
+    <string name="drawer_choose_chosen">已选课程</string>
     <string name="drawer_choose_state">概况</string>
     <string name="drawer_choose_public">公选课</string>
     <string name="drawer_choose_recommend">推荐选课</string>

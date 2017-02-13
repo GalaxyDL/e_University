@@ -10,22 +10,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by wangh on 2016/12/1.
+ * Created by wangh on 2017/2/13.
  */
 
-public abstract class ChoosingClassesFragment extends Fragment implements DataManager.UpdateListener {
-    protected DataManager dataManager = new DataManager(getContext());
-    private ArrayList<ClassForChoose> classForChooses;
+public class ChosenClassesFragment extends Fragment {
+    private DataManager dataManager;
 
     private RecyclerView recyclerView;
+
     private ClassForChooseAdapter adapter;
 
     private ProgressDialog progressDialog;
 
     private LoginHelper loginHelper;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        dataManager = new DataManager(getContext());
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
@@ -38,27 +44,30 @@ public abstract class ChoosingClassesFragment extends Fragment implements DataMa
             @Override
             public void done() {
                 progressDialog = ProgressDialog.show(getContext(),"","正在加载");
-                updateView();
+                dataManager.getChosenClass(new DataManager.ChosenClassesUpdateListener() {
+                    @Override
+                    public void done(List<ClassForChoose> result) {
+                        updateView(result);
+                    }
+                });
             }
         });
         loginHelper.login();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         return view;
     }
 
-    protected abstract void updateView();
-
-    @Override
-    public void update() {
-        progressDialog.dismiss();
-        classForChooses=dataManager.getClassForChooses();
-        for(ClassForChoose classForChoose:classForChooses){
+    private void updateView(List<ClassForChoose> list){
+        for(ClassForChoose classForChoose:list){
             adapter.addClass(classForChoose);
         }
-        recyclerView.refreshDrawableState();
-        recyclerView.setAdapter(adapter);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
-
 }

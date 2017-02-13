@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private MeFragment meFragment;
     private ChoosingIndexFragment choosingIndexFragment;
     private ChooseNotTimeFragment chooseNotTimeFragment;
+    private ChosenClassesFragment chosenClassesFragment;
     private PublicClassFragment publicClassFragment;
     private RecommendClassFragment recommendClassFragment;
     private SportsClassFragment sportsClassFragment;
@@ -194,6 +195,16 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    private void changeToChosen(){
+        toolbar.setTitle("选课");
+        fragmentTransaction = fragmentManager.beginTransaction();
+        if (chosenClassesFragment == null) {
+            chosenClassesFragment = new ChosenClassesFragment();
+        }
+        fragmentTransaction.replace(R.id.frameLayout, chosenClassesFragment);
+        fragmentTransaction.commit();
+    }
+
     private void changeToPublic(){
         toolbar.setTitle("选课");
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -207,10 +218,10 @@ public class MainActivity extends AppCompatActivity {
     private void changeToRecommend(){
         toolbar.setTitle("选课");
         fragmentTransaction = fragmentManager.beginTransaction();
-        if (publicClassFragment == null) {
-            publicClassFragment = new PublicClassFragment();
+        if (recommendClassFragment == null) {
+            recommendClassFragment = new RecommendClassFragment();
         }
-        fragmentTransaction.replace(R.id.frameLayout, publicClassFragment);
+        fragmentTransaction.replace(R.id.frameLayout, recommendClassFragment);
         fragmentTransaction.commit();
     }
 
@@ -280,30 +291,43 @@ public class MainActivity extends AppCompatActivity {
                         navigationView.getMenu().findItem(R.id.classTable).setChecked(false);
                         changeToScore();
                         break;
+
                     case R.id.choosingState:
                         navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.sportsClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.recommendClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.chosenClass).setChecked(false);
                         changeToChooseIndex();
+                        break;
+                    case R.id.chosenClass:
+                        navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.sportsClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.recommendClass).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.choosingState).setChecked(false);
+                        changeToChosen();
                         break;
                     case R.id.sportsClass:
                         navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.recommendClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.choosingState).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.chosenClass).setChecked(false);
                         changeToSports();
                         break;
                     case R.id.publicClass:
                         navigationView.getMenu().findItem(R.id.sportsClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.recommendClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.choosingState).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.chosenClass).setChecked(false);
                         changeToPublic();
                         break;
                     case R.id.recommendClass:
                         navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.sportsClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.choosingState).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.chosenClass).setChecked(false);
                         changeToRecommend();
                         break;
+
                     case R.id.account:
                         navigationView.getMenu().findItem(R.id.login).setChecked(false);
                         changeToMe();
