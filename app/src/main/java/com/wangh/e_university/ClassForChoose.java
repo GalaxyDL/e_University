@@ -1,5 +1,7 @@
 package com.wangh.e_university;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -189,6 +191,21 @@ public class ClassForChoose {
         }
     }
 
+    public void parseChosenClass(String[] lines){
+        idForChoose=lines[5];
+        id=lines[7];
+        title=lines[9];
+        hours=lines[19];
+        sort=ClassInfoConst.CLASS_SORT.get(lines[23]);
+        nature=ClassInfoConst.CLASS_NATURE.get(lines[27]);
+        try {
+            credit=Integer.parseInt(lines[21].split("\\.")[0]);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        teacher=lines[37];
+    }
+
     public void addTime(String[] lines){
         week.add(lines[5]);
         try {
@@ -207,6 +224,7 @@ public class ClassForChoose {
             e.printStackTrace();
         }
         location.add(lines[13]);
+        Log.d("got time",this.toString());
     }
 
     @Override

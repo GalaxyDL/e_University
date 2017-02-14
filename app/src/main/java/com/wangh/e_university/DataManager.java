@@ -131,7 +131,7 @@ public class DataManager {
 
     private void doGetChoosedClass(Document doc, ChosenClassesUpdateListener updateListener) {
         List<ClassForChoose> result = new ArrayList<ClassForChoose>();
-        int count = 0;
+        int count = 0,classCount=0;
         for (Node node : doc.child(0).child(1).childNodes()) {
             count++;
             if (node.nodeName().equals("#comment")) {
@@ -142,10 +142,15 @@ public class DataManager {
                             break;
                         }
                         if (list.get(count + i).toString().split("'").length == 53) {
+                            classCount++;
                             ClassForChoose aClass = new ClassForChoose();
-                            aClass.parseClass(list.get(count + i).toString().split("'"));
+                            aClass.parseChosenClass(list.get(count + i).toString().split("'"));
                             Log.d("got chosen class",aClass.toString());
                             result.add(aClass);
+                        }
+                        if (list.get(count + i).toString().split("'").length == 15){
+                            ClassForChoose  aClass= result.get(classCount - 1);
+                            aClass.addTime(list.get(count + i).toString().split("'"));
                         }
                     }
                     break;
