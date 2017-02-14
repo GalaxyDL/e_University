@@ -28,6 +28,24 @@ public class ClassForChoose {
     private String id;
     private String[] targetClasses;
     private String targetSex;
+    private boolean chosen=false;
+    private String choosingSort;
+
+    public String getChoosingSort() {
+        return choosingSort;
+    }
+
+    public void setChoosingSort(String choosingSort) {
+        this.choosingSort = choosingSort;
+    }
+
+    public void setChosen(boolean chosen) {
+        this.chosen = chosen;
+    }
+
+    public boolean isChosen() {
+        return chosen;
+    }
 
     public String getTitle() {
         return title;
@@ -247,6 +265,9 @@ public class ClassForChoose {
                 ", currentNumber=" + currentNumber +
                 ", idForChoose='" + idForChoose + '\'' +
                 ", id='" + id + '\'' +
+                ", targetClasses=" + Arrays.toString(targetClasses) +
+                ", targetSex='" + targetSex + '\'' +
+                ", chosen=" + chosen +
                 '}';
     }
 }

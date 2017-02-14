@@ -43,7 +43,7 @@ public class ScoreFragment extends Fragment {
 
         averageCredit=(TextView)view.findViewById(R.id.averageCredit);
         String averageCredit=databaseManager.queryAverageCredit();
-        if(averageCredit.equals("×")){
+        if(averageCredit.equals("")){
             this.averageCredit.setText("没有查到一科成绩呢QwQ");
         }else{
             this.averageCredit.setText(databaseManager.queryAverageCredit());

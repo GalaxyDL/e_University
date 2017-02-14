@@ -55,7 +55,7 @@ public class HttpRequester {
             String lines;
             while((lines = reader.readLine())!=null){
                 html+=lines;
-                //Log.d("html",lines);
+                Log.d("html",lines);
             }
             reader.close();
             Log.d("ResponseCode of "+url,connection.getResponseCode()+"");
@@ -112,7 +112,7 @@ public class HttpRequester {
             String lines;
             while((lines = reader.readLine())!=null){
                 html+=lines;
-                Log.d("html",lines);
+//                Log.d("html",lines);
             }
             reader.close();
             Log.d("ResponseCode of "+url,connection.getResponseCode()+"");

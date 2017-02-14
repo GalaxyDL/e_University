@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -87,7 +88,7 @@ public class LoginHelper{
                         listener.done();
                         Snackbar.make(coordinatorLayout, "登录成功", Snackbar.LENGTH_SHORT).show();
                     } else {
-                        login();
+                        doLogin();
                         Snackbar.make(coordinatorLayout, "登录失败了,看看学号、密码和验证码是否正确QwQ", Snackbar.LENGTH_SHORT).show();
                     }
                     break;
@@ -95,11 +96,15 @@ public class LoginHelper{
                     doc = (Document) msg.obj;
                     if(doc==null){
                         isLoginListener.done(false);
+                        Log.d("login","false");
                     }else {
                         if (!doc.getElementsByTag("a").first().text().equals("登录")) {
                             isLoginListener.done(true);
+                            Log.d("login","true");
+                            Log.d("login",doc.getElementsByTag("a").first().text());
                         } else {
                             isLoginListener.done(false);
+                            Log.d("login","false");
                         }
                     }
 
@@ -113,7 +118,7 @@ public class LoginHelper{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Document doc = httpRequester.get("http://xk.tjut.edu.cn/xsxk/");
+                Document doc = httpRequester.get("http://xk.tjut.edu.cn/xsxk/index.xk");
                 Message msg = new Message();
                 msg.what = 2;
                 msg.obj = doc;

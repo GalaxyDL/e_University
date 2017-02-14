@@ -18,7 +18,6 @@ import java.util.ArrayList;
  * Created by wangh on 2016/8/2.
  */
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder> {
-    private final String[] WEEK={"","星期一","星期二","星期三","星期四","星期五","星期六","星期日"};
     private final LayoutInflater layoutInflater;
     private final Context context;
     private ArrayList<ClassItem> classes=new ArrayList<ClassItem>();
@@ -27,7 +26,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
     private ItemOnClickListener itemOnClickListener;
 
     public interface ItemOnClickListener{
-        public void onClick(View view,int index,ClassHolder classHolder);
+        void onClick(View view,int index,ClassHolder classHolder);
     }
 
     public void setItemOnClickListener(ItemOnClickListener itemOnClickListener) {
@@ -58,18 +57,14 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
     @Override
     public void onBindViewHolder(ClassHolder holder, int position) {
         ClassItem aClass=classes.get(position);
-//        Log.d("onBindViewHolder",aClass.toString());
         if(isDate.get(position)){
             if(!isToday.get(position)) {
                 setDateItem(holder,classes.get(position));
             }else{
                 setTodayItem(holder,classes.get(position));
             }
-
-            Log.d("onBindViewHolder date",classes.get(position).toString());
         }else{
             setClassItem(holder,classes.get(position));
-            Log.d("onBindViewHolder class",classes.get(position).toString());
         }
     }
 
@@ -80,7 +75,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
     }
 
     private void setDateItem(ClassHolder holder,ClassItem aClass){
-        String timeText=aClass.getMonth()+"月"+aClass.getDay()+"日 "+WEEK[aClass.getDate()];
+        String timeText=aClass.getMonth()+"月"+aClass.getDay()+"日 "+ClassInfoConst.DATA[aClass.getDate()];
         holder.classLocation.setText(timeText);
         holder.classLocation.setTextColor(context.getResources().getColor(R.color.black));
         holder.classTitle.setVisibility(View.GONE);

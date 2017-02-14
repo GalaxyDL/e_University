@@ -43,4 +43,11 @@
     <string name="score_number">成绩</string>
     <string name="score_credit">学分</string>
 
+    <string name="time">上课时间及地点：</string>
+    <string name="credit">学分：</string>
+    <string name="hours">学时：</string>
+    <string name="choose">选课</string>
+    <string name="now">当前选课人数：</string>
+    <string name="limit">课堂容量：</string>
+
 </resources>

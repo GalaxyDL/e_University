@@ -8,6 +8,7 @@ import java.util.Map;
  */
 
 public class ClassInfoConst {
+    public final static String[] DATA= {"","星期一","星期二","星期三","星期四","星期五","星期六","星期七"};
     public final static String[] CLASS_START_TIME = {"8:00", "08:55", "10:10", "11:05", "14:00", "14:55", "16:10", "17:05", "18:30", "19:25", "20:20"};
     public final static String[] CLASS_END_TIME = {"08:45", "09:40", "10:55", "11:50", "14:45", "15:40", "16:55", "17:50", "19:15", "20:10", "21:05"};
     public final static Map<String, String> CLASS_SORT = new HashMap<String, String>() {{

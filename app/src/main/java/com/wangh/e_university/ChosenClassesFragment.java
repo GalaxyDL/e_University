@@ -38,7 +38,7 @@ public class ChosenClassesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_choose,container,false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewOfChoose);
-        adapter = new ClassForChooseAdapter(getContext());
+        adapter = new ClassForChooseAdapter(getContext(),getActivity());
 
         loginHelper = new LoginHelper(getContext(), getActivity(), new LoginHelper.LoginListener() {
             @Override
@@ -60,6 +60,7 @@ public class ChosenClassesFragment extends Fragment {
 
     private void updateView(List<ClassForChoose> list){
         for(ClassForChoose classForChoose:list){
+            classForChoose.setChosen(true);
             adapter.addClass(classForChoose);
         }
         getActivity().runOnUiThread(new Runnable() {

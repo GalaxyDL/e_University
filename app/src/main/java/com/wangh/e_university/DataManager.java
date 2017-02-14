@@ -284,6 +284,7 @@ public class DataManager {
                     classCount++;
                     classForChoose = new ClassForChoose();
                     classForChoose.parseClass(lines);
+                    classForChoose.setChoosingSort(RECOMMEND);
                     classForChooses.add(classForChoose);
                 } else {
                     classForChoose = classForChooses.get(classCount - 1);
@@ -335,6 +336,7 @@ public class DataManager {
                     classCount++;
                     classForChoose = new ClassForChoose();
                     classForChoose.parseClass(lines);
+                    classForChoose.setChoosingSort(SPORTS);
                     classForChooses.add(classForChoose);
                 } else {
                     classForChoose = classForChooses.get(classCount - 1);
@@ -391,6 +393,7 @@ public class DataManager {
                     classCount++;
                     classForChoose = new ClassForChoose();
                     classForChoose.parseClass(lines);
+                    classForChoose.setChoosingSort(PUBLIC);
                     classForChooses.add(classForChoose);
                 } else {
                     classForChoose = classForChooses.get(classCount - 1);
@@ -533,6 +536,7 @@ public class DataManager {
         Element table = doc.getElementsByTag("tbody").get(7);
         if (table != null) {
             databaseManager.deleteAllScore();
+            databaseManager.deleteAverageCredit();
 
             ScoreItem aScoreItem;
 
