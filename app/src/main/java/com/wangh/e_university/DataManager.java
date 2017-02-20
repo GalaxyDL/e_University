@@ -185,8 +185,8 @@ public class DataManager {
                 List<Node> list = i.parentNode().childNodes();
                 switch (i.toString()) {
                     case "\n<!-- 加载学生基本信息 -->":
-                        result.setGrade(list.get(count + 3).toString().split("'")[3]);
-                        result.setClasses(list.get(count + 5).toString().split("'")[3]);
+                        result.setGrade(list.get(count + 5).toString().split("'")[3]);
+                        result.setClasses(list.get(count + 7).toString().split("'")[3]);
                         result.setDepartment(ClassInfoConst.CLASS_DEPARTMENT.get(list.get(count + 9).toString().split("'")[3]));
                         result.setMajor(ClassInfoConst.MAJOR.get(list.get(count + 11).toString().split("'")[3]));
                         result.setStdID(list.get(count + 17).toString().split("'")[3]);

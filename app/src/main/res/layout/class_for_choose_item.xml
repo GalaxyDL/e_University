@@ -115,6 +115,7 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
                 android:id="@+id/classForChooseTimes"/>
             <Button
                 android:layout_width="wrap_content"

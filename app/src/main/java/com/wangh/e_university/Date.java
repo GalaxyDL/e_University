@@ -102,7 +102,7 @@ public class Date {
         Log.d("now month",""+month);
         Log.d("now year",""+year);
 
-        int result=week-startTime.getWeekNumber()+1;
+        int result=week-startTime.getWeekNumber();
         while(result<0)result+=52;
         Log.d("result",""+result);
         while(result>20){

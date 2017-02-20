@@ -94,7 +94,7 @@ public class ClassFragment extends Fragment{
         adapter = new ClassAdapter(this.getActivity());
 
         startDay=date.getStartDate().getDay();
-        startMonth=date.getStartDate().getMonth();
+        startMonth=date.getStartDate().getMonth()+1;
         nowDate=date.getData();
 
         if(nowDate==0)nowDate=7;
