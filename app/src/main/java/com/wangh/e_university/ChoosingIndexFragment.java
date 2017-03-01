@@ -1,6 +1,7 @@
 package com.wangh.e_university;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,7 @@ public class ChoosingIndexFragment extends Fragment {
 
     private LoginHelper loginHelper;
 
+    private Context context;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,8 +41,12 @@ public class ChoosingIndexFragment extends Fragment {
         loginHelper = new LoginHelper(getContext(), getActivity(), new LoginHelper.LoginListener() {
             @Override
             public void done() {
-                progressDialog = ProgressDialog.show(getContext(),"","正在加载");
-                getInfo();
+                context = getContext();
+                if(context!=null){
+                    progressDialog = ProgressDialog.show(getContext(),"","正在加载");
+                    getInfo();
+                }
+
             }
         });
         loginHelper.login();
