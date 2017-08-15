@@ -15,7 +15,7 @@ import cn.bmob.v3.listener.QueryListener;
 
 public class StartDate extends BmobObject {
     private Integer year=2017;
-    private Integer month=7;
+    private Integer month=8;
     private Integer day=15;
 
     public StartDate(){
