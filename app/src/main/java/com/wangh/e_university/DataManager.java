@@ -51,13 +51,25 @@ public class DataManager {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case CLASS_TABLE:
-                    doUpdateClassTable((Document) msg.obj);
+                    try {
+                        doUpdateClassTable((Document) msg.obj);
+                    }catch (Exception e){
+                        Log.d("handleMessage", "doUpdateClassTable: " + e.toString());
+                    }
                     break;
                 case SCORE:
-                    doUpdateScore((Document) msg.obj);
+                    try {
+                        doUpdateScore((Document) msg.obj);
+                    }catch (Exception e){
+                        Log.d("handleMessage", "doUpdateScore: " + e.toString());
+                    }
                     break;
                 case EXAM:
-                    doUpdateExam((Document) msg.obj);
+                    try{
+                        doUpdateExam((Document) msg.obj);
+                    }catch (Exception e){
+                        Log.d("handleMessage", "doUpdateExam: " + e.toString());
+                    }
                     break;
                 case PUBLIC_CLASSES:
                     doUpdatePublicClasses((Document) msg.obj);

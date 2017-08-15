@@ -4,14 +4,14 @@ android {
     signingConfigs {
     }
     compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '25.0.0'
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.wangh.e_university"
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 12
-        versionName '1.01'
+        versionCode 13
+        versionName '1.0.2'
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {

@@ -2,6 +2,7 @@ package com.wangh.e_university;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -39,6 +40,8 @@ public class LoginHelper{
     private SharedPreferences sharedPreferences;
     private HttpRequester httpRequester=new HttpRequester();
 
+    private ProgressDialog progressDialog;
+
     private CoordinatorLayout coordinatorLayout;
 
     private Context context;
@@ -64,6 +67,7 @@ public class LoginHelper{
         isLoginListener = new IsLoginListener() {
             @Override
             public void done(boolean isLogin) {
+                progressDialog.dismiss();
                 if(isLogin){
                     listener.done();
                 }else{
@@ -128,6 +132,7 @@ public class LoginHelper{
     }
 
     public void login(){
+        progressDialog = ProgressDialog.show(context,"","请稍后");
         isLogin(isLoginListener);
     }
 

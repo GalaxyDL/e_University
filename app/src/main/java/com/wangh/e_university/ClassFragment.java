@@ -65,7 +65,7 @@ public class ClassFragment extends Fragment{
         date=new Date();
         BmobQuery<Days> query = new BmobQuery<Days>();
         query.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
-        query.setMaxCacheAge(TimeUnit.DAYS.toMillis(30));
+        query.setMaxCacheAge(TimeUnit.DAYS.toMillis(7));
         query.setLimit(20);
         query.findObjects(new FindListener<Days>() {
             @Override
