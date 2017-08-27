@@ -228,6 +228,9 @@ public class ClassFragment extends Fragment{
                 nowClass=adapter.getItemCount()-1;
             }
         }
+        if(classes.isEmpty()){
+            classCountText="没有数据呢，快去个人页面更新课程数据~";
+        }
         tip.setText(classCountText);
         if(nowClass==-1){
             nowClass=adapter.getItemCount()-1;
