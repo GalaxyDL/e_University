@@ -47,7 +47,11 @@ public class Date {
                         if(e==null){
                             startDate.updateStartDate(list.get(0));
                             SharedPreferences sharedPreferences = activity.getSharedPreferences("starDate",Activity.MODE_PRIVATE);
-                            sharedPreferences.edit().putInt("year",year).putInt("month",month).putInt("day",day).apply();
+                            sharedPreferences.edit()
+                                    .putInt("year",startDate.getYear())
+                                    .putInt("month",startDate.getMonth())
+                                    .putInt("day",startDate.getDay())
+                                    .apply();
                             Log.d("startDate", "done: " + startDate);
                         }else{
                             e.printStackTrace();
