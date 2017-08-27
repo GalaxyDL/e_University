@@ -43,9 +43,9 @@ public class MeFragment extends Fragment {
 
         if(sharedPreferences.getBoolean("isLogin",false)){
             name.setText(sharedPreferences.getString("name",""));
-            adapter.addInfo(new InfoItem(sharedPreferences.getString("id",""),"学号"));
-            adapter.addInfo(new InfoItem(sharedPreferences.getString("department",""),"学院"));
-            adapter.addInfo(new InfoItem(sharedPreferences.getString("major",""),"专业"));
+            if(!sharedPreferences.getString("id","").isEmpty())adapter.addInfo(new InfoItem(sharedPreferences.getString("id",""),"学号"));
+            if(!sharedPreferences.getString("department","").isEmpty())adapter.addInfo(new InfoItem(sharedPreferences.getString("department",""),"学院"));
+            if(!sharedPreferences.getString("major","").isEmpty())adapter.addInfo(new InfoItem(sharedPreferences.getString("major",""),"专业"));
         }else {
             adapter.addInfo(new InfoItem("你还没有导入数据呢，点击更新按钮吧！","当你需要查询新的课程时，再次更新数据就好啦OwO"));
         }

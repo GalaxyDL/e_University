@@ -55,6 +55,7 @@ public class DataManager {
                         doUpdateClassTable((Document) msg.obj);
                     }catch (Exception e){
                         Log.d("handleMessage", "doUpdateClassTable: " + e.toString());
+                        e.printStackTrace();
                     }
                     break;
                 case SCORE:
@@ -62,6 +63,7 @@ public class DataManager {
                         doUpdateScore((Document) msg.obj);
                     }catch (Exception e){
                         Log.d("handleMessage", "doUpdateScore: " + e.toString());
+                        e.printStackTrace();
                     }
                     break;
                 case EXAM:
@@ -69,6 +71,7 @@ public class DataManager {
                         doUpdateExam((Document) msg.obj);
                     }catch (Exception e){
                         Log.d("handleMessage", "doUpdateExam: " + e.toString());
+                        e.printStackTrace();
                     }
                     break;
                 case PUBLIC_CLASSES:
@@ -458,9 +461,9 @@ public class DataManager {
                 Message msg = new Message();
                 date = new Date();
                 String postContent = "xnxqdm=";
-                if (date.getMonth() <= 8 && date.getMonth() >= 2) {
+                if (date.getMonth() <= 7 && date.getMonth() >= 2) {
                     postContent += (date.getYear() - 1) + "-" + date.getYear() + "-2";
-                } else if (date.getMonth() > 8) {
+                } else if (date.getMonth() > 7) {
                     postContent += date.getYear() + "-" + (date.getYear() + 1) + "-1";
                 } else if (date.getMonth() < 2) {
                     postContent += (date.getYear() - 1) + "-" + date.getYear() + "-1";
@@ -535,6 +538,8 @@ public class DataManager {
                         "isFirst=1&" +
                         postContent +
                         "qKclbdm_ys=&" +
+                        "qKcxzdm_ys=&" +
+                        "qXdlx_ys=&" +
                         "qKch_ys=&" +
                         "qKcm_ys=&" +
                         "currentSelectTabId=01", true);
@@ -545,7 +550,7 @@ public class DataManager {
 
     private void doUpdateScore(Document doc) {
         databaseManager = new DatabaseManager(context);
-        Element table = doc.getElementsByTag("tbody").get(7);
+        Element table = doc.getElementsByTag("tbody").get(8);
         if (table != null) {
             databaseManager.deleteAllScore();
             databaseManager.deleteAverageCredit();
@@ -580,9 +585,9 @@ public class DataManager {
                 Message msg = new Message();
                 date = new Date();
                 String urlContent = "";
-                if (date.getMonth() <= 8 && date.getMonth() >= 2) {
+                if (date.getMonth() <= 7 && date.getMonth() >= 2) {
                     urlContent += (date.getYear() - 1) + "-" + date.getYear() + "-2";
-                } else if (date.getMonth() > 8) {
+                } else if (date.getMonth() > 7) {
                     urlContent += date.getYear() + "-" + (date.getYear() + 1) + "-1";
                 } else if (date.getMonth() < 2) {
                     urlContent += (date.getYear() - 1) + "-" + date.getYear() + "-1";

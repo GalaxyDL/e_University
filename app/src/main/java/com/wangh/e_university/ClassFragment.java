@@ -62,7 +62,7 @@ public class ClassFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        date=new Date();
+        date=new Date(getActivity());
         BmobQuery<Days> query = new BmobQuery<Days>();
         query.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.setMaxCacheAge(TimeUnit.DAYS.toMillis(7));

@@ -1,5 +1,7 @@
 package com.wangh.e_university;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -29,22 +31,46 @@ public class Date {
     private final Time startTime=new Time();
     private StartDate startDate;
 
+    public Date(final Activity activity){
+        Log.d("Date","date");
+        startDate = new StartDate(activity);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+        Log.d("Date", "start date query");
+                BmobQuery<StartDate> bmobQuery = new BmobQuery<StartDate>();
+                bmobQuery.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
+                bmobQuery.setMaxCacheAge(TimeUnit.DAYS.toMillis(15));
+                bmobQuery.findObjects(new FindListener<StartDate>() {
+                    @Override
+                    public void done(List<StartDate> list, BmobException e) {
+                        if(e==null){
+                            startDate.updateStartDate(list.get(0));
+                            SharedPreferences sharedPreferences = activity.getSharedPreferences("starDate",Activity.MODE_PRIVATE);
+                            sharedPreferences.edit().putInt("year",year).putInt("month",month).putInt("day",day).apply();
+                            Log.d("startDate", "done: " + startDate);
+                        }else{
+                            e.printStackTrace();
+                        }
+                    }
+                });
+//            }
+//        }).start();
+        setStartDate(startDate);
+        time=new Time();
+        time.setToNow();
+        year=time.year;
+        month=time.month;
+        week=time.getWeekNumber();
+        day=time.monthDay;
+        data=time.weekDay;
+        hour=time.hour;
+        minute=time.minute;
+        Log.d("Date","date e");
+    }
+
     public Date(){
         Log.d("Date","date");
-//        BmobQuery<StartDate> bmobQuery = new BmobQuery<StartDate>();
-//        bmobQuery.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK);
-//        bmobQuery.setMaxCacheAge(TimeUnit.DAYS.toMillis(30));
-//        bmobQuery.findObjects(new FindListener<StartDate>() {
-//            @Override
-//            public void done(List<StartDate> list, BmobException e) {
-//                if(e==null){
-//                    startDate = list.get(0);
-//                    setStartDate(list.get(0));
-//                }
-//            }
-//        });
-        startDate = new StartDate();
-        setStartDate(startDate);
         time=new Time();
         time.setToNow();
         year=time.year;
