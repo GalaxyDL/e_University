@@ -8,10 +8,7 @@ import java.io.Serializable;
 /**
  * Created by wangh on 2016/8/3.
  */
-public class ClassItem implements Cloneable,Serializable{
-    private String classTitle;
-    private String classLocation;
-    private String classTime;
+public class ClassItem extends BaseScheduleItem implements Cloneable {
     private String teacher;
     private int weekStart;
     private int weekEnd;
@@ -20,26 +17,18 @@ public class ClassItem implements Cloneable,Serializable{
     private int timeStart;
     private int timeEnd;
     private int classNumber;
-    private int date;
-    private int day;
-    private int month;
-    private int colorID;
-    private boolean isDate=false;
-    private boolean isPassed;
-    private boolean isToday;
+
 
     public ClassItem(int date, int day ,int month, boolean isToday) {
-        this.day = day;
-        this.date = date;
-        this.month = month;
-        this.isToday = isToday;
-        isDate=true;
+        setDay(day);
+        setDate(date);
+        setMonth(month);
+        setToday(isToday);
+        setDate(true);
     }
 
     public ClassItem(String classTitle, String classLocation, String classTime, String teacher, int weekStart, int weekEnd, int singleWeek, int doubleWeek, int timeStart, int timeEnd, int classNumber, int date, int colorID) {
-        this.classTitle = classTitle;
-        this.classLocation = classLocation;
-        this.classTime = classTime;
+        super(classTitle,classTime,classLocation);
         this.teacher = teacher;
         this.weekStart = weekStart;
         this.weekEnd = weekEnd;
@@ -48,36 +37,18 @@ public class ClassItem implements Cloneable,Serializable{
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.classNumber = classNumber;
-        this.date = date;
-        this.colorID = colorID;
-        isDate=false;
+        setDate(date);
+        setColorID(colorID);
+        setDate(false);
     }
 
     public ClassItem(String classTitle, String classLocation, String classTime) {
-        this.classTitle = classTitle;
-        this.classLocation = classLocation;
-        this.classTime = classTime;
-        isDate=false;
+        super(classTitle,classTime,classLocation);
+        setDate(false);
     }
 
     public ClassItem(){
 
-    }
-
-    public boolean isDate() {
-        return isDate;
-    }
-
-    public void setDate(boolean date) {
-        isDate = date;
-    }
-
-    public void setClassTime(String classTime) {
-        this.classTime = classTime;
-    }
-
-    public void setClassLocation(String classLocation) {
-        this.classLocation = classLocation;
     }
 
     public void setTeacher(String teacher) {
@@ -109,36 +80,6 @@ public class ClassItem implements Cloneable,Serializable{
     }
 
     public void setClassNumber(int classNumber) { this.classNumber = classNumber; }
-
-    public void setClassTitle(String classTitle) {
-        this.classTitle = classTitle;
-    }
-
-    public void setDate(int date) { this.date = date; }
-
-    public void setColorID(int colorID) {
-        this.colorID = colorID;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public String getClassTitle() {
-        return classTitle;
-    }
-
-    public String getClassTime() {
-        return classTime;
-    }
-
-    public String getClassLocation() {
-        return classLocation;
-    }
 
     public int getWeekStart() {
         return weekStart;
@@ -172,34 +113,12 @@ public class ClassItem implements Cloneable,Serializable{
         return classNumber;
     }
 
-    public int getDate() {return date;}
-
-    public int getColorID() {
-        return colorID;
-    }
-
-    public boolean isPassed() {
-        return isPassed;
-    }
-
-    public void setPassed(boolean passed) {
-        isPassed = passed;
-    }
-
-    public boolean isToday() {
-        return isToday;
-    }
-
-    public void setToday(boolean today) {
-        isToday = today;
-    }
-
     @Override
     public String toString() {
         return "ClassItem{" +
-                "classTitle='" + classTitle + '\'' +
-                ", classLocation='" + classLocation + '\'' +
-                ", classTime='" + classTime + '\'' +
+                "classTitle='" + getTitle() + '\'' +
+                ", classLocation='" + getLocation() + '\'' +
+                ", classTime='" + getTime() + '\'' +
                 ", teacher='" + teacher + '\'' +
                 ", weekStart=" + weekStart +
                 ", weekEnd=" + weekEnd +
@@ -208,12 +127,12 @@ public class ClassItem implements Cloneable,Serializable{
                 ", timeStart=" + timeStart +
                 ", timeEnd=" + timeEnd +
                 ", classNumber=" + classNumber +
-                ", date=" + date +
-                ", day=" + day +
-                ", month=" + month +
-                ", colorID=" + colorID +
-                ", isDate=" + isDate +
-                ", isPassed=" + isPassed +
+                ", date=" + getDate() +
+                ", day=" + getDay() +
+                ", month=" + getMonth() +
+                ", colorID=" + getColorID() +
+                ", isDate=" + getDate() +
+                ", isPassed=" + isPassed() +
                 '}';
     }
 

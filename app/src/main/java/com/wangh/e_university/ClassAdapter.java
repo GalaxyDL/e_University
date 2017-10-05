@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder> {
     private final LayoutInflater layoutInflater;
     private final Context context;
-    private ArrayList<ClassItem> classes=new ArrayList<ClassItem>();
+    private ArrayList<BaseScheduleItem> classes=new ArrayList<>();
     private ArrayList<Boolean> isDate=new ArrayList<>();
     private ArrayList<Boolean> isToday=new ArrayList<>();
     private ItemOnClickListener itemOnClickListener;
@@ -33,13 +33,13 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
         this.itemOnClickListener = itemOnClickListener;
     }
 
-    public void addClass(ClassItem classItem){
+    public void addClass(BaseScheduleItem classItem){
         classes.add(classItem);
         isDate.add(classItem.isDate());
         isToday.add(classItem.isToday());
     }
 
-    public ClassItem getClass(int index) {
+    public BaseScheduleItem getClass(int index) {
         return classes.get(index);
     }
 
@@ -56,7 +56,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
 
     @Override
     public void onBindViewHolder(ClassHolder holder, int position) {
-        ClassItem aClass=classes.get(position);
+        BaseScheduleItem aClass=classes.get(position);
         if(isDate.get(position)){
             if(!isToday.get(position)) {
                 setDateItem(holder,classes.get(position));
@@ -68,13 +68,13 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
         }
     }
 
-    private void setTodayItem(ClassHolder holder,ClassItem aClass){
+    private void setTodayItem(ClassHolder holder,BaseScheduleItem aClass){
         setDateItem(holder,aClass);
         holder.classLocation.setTextColor(context.getResources().getColor(R.color.colorAccent));
         holder.classLocation.getPaint().setFakeBoldText(true);
     }
 
-    private void setDateItem(ClassHolder holder,ClassItem aClass){
+    private void setDateItem(ClassHolder holder,BaseScheduleItem aClass){
         String timeText=aClass.getMonth()+"月"+aClass.getDay()+"日 "+ClassInfoConst.DATA[aClass.getDate()];
         holder.classLocation.setText(timeText);
         holder.classLocation.setTextColor(context.getResources().getColor(R.color.black));
@@ -86,10 +86,15 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
         holder.classBlock.setBackgroundColor(context.getResources().getColor(R.color.white));
     }
 
-    private void setClassItem(ClassHolder holder,ClassItem aClass){
-        holder.classTime.setText(aClass.getClassTime());
-        holder.classTitle.setText(aClass.getClassTitle());
-        holder.classLocation.setText(aClass.getClassLocation());
+    private void setClassItem(ClassHolder holder,BaseScheduleItem aClass){
+        if(aClass.isExam()) {
+            holder.classTime.setText(aClass.getTime().split("\\s")[1]);
+            holder.classTitle.setText("考试：" + aClass.getTitle());
+        }else {
+            holder.classTime.setText(aClass.getTime());
+            holder.classTitle.setText( aClass.getTitle());
+        }
+        holder.classLocation.setText(aClass.getLocation());
         holder.classTitle.setVisibility(View.VISIBLE);
         holder.classTime.setVisibility(View.VISIBLE);
         holder.classLocation.setTextColor(context.getResources().getColor(R.color.white));

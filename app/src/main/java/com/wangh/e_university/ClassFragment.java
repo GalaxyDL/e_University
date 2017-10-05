@@ -36,6 +36,8 @@ public class ClassFragment extends Fragment{
     private final static int[] MONTH_DAY={31,28,31,30,31,30,31,31,30,31,30,31};
     private final static int[] CLASS_END_HOUR={0,8,9,10,11,14,15,16,17,19,20,21};
     private final static int[] CLASS_END_MIN={0,45,40,55,50,45,40,55,50,15,10,5};
+    private final static int[] CLASS_START_HOUR={0,8,8,10,11,14,14,16,17,18,19,20};
+    private final static int[] CLASS_START_MIN={0,0,55,10,5,0,55,10,5,30,25,20};
 
     private int startDay;
     private int startMonth;
@@ -141,13 +143,15 @@ public class ClassFragment extends Fragment{
         int day=startDay;
         int month=startMonth;
         int actualDate;
+        int examIndex = 0;
         boolean noClass=false;
         boolean isToday;
         boolean passed;
         boolean isHoliday=false;
         ArrayList<ClassItem> classes=(ArrayList<ClassItem>) databaseManager.queryClass();
+        ArrayList<ExamItem> exams = (ArrayList<ExamItem>) databaseManager.queryExam();
         ArrayList<ClassItem> dayClasses;
-
+        ExamItem nextExam = exams.isEmpty()?null:exams.get(0);
         if(nowWeek==0){
             if(nowMonth<=startMonth){
                 adapter.addClass(new ClassItem(nowDate,nowDay,nowMonth,true));
@@ -202,9 +206,28 @@ public class ClassFragment extends Fragment{
                     adapter.addClass(new ClassItem(j,day,month,isToday));
                 }
                 for(ClassItem item:dayClasses){
+                    while(nextExam != null && month == nextExam.getMonth()
+                            && day == nextExam.getDay()){
+                        if(nextExam.getEndHour() <= CLASS_START_HOUR[item.getTimeStart()]
+                                && nextExam.getEndMinute() <= CLASS_START_MIN[item.getTimeStart()]){
+                            adapter.addClass(nextExam);
+                            if(++examIndex < exams.size()){
+                                nextExam = exams.get(examIndex);
+                            }else {
+                                nextExam = null;
+                            }
+                        }
+                    }
                     adapter.addClass(item);
                 }
-
+                while(nextExam != null && month == nextExam.getMonth() && day == nextExam.getDay()){
+                    adapter.addClass(nextExam);
+                    if(++examIndex < exams.size()){
+                        nextExam = exams.get(examIndex);
+                    }else {
+                        nextExam = null;
+                    }
+                }
                 day=getDay(day,month,1);
                 month=day==1?month+1:month;
                 month=month==13?1:month;
