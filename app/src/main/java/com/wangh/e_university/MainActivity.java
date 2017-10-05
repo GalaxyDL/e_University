@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private BottomBar bottomBar;
 
-    private TaskFragment taskFragment;
     private ClassFragment classFragment;
     private ExamFragment examFragment;
     private ScoreFragment scoreFragment;
@@ -88,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
             public void onUpdateReturned(int i, UpdateResponse updateResponse) {
                 if (i == UpdateStatus.Yes) {
                     ur = updateResponse;
-                    Log.d("update", "need");
+                    Log.d("update","need");
                 }
-                Log.d("UpdateStatus", i + "");
+                Log.d("UpdateStatus",i+"");
             }
         });
 
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                drawerLayout.openDrawer(navigationView, true);
+                drawerLayout.openDrawer(navigationView,true);
             }
         });
 
@@ -186,16 +185,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void changeToTask() {
-        toolbar.setTitle("任务");
-        fragmentTransaction = fragmentManager.beginTransaction();
-        if (taskFragment == null) {
-            taskFragment = new TaskFragment();
-        }
-        fragmentTransaction.replace(R.id.frameLayout, taskFragment);
-        fragmentTransaction.commit();
-    }
-
     private void changeToChooseIndex() {
         toolbar.setTitle("选课");
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -206,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void changeToChosen() {
+    private void changeToChosen(){
         toolbar.setTitle("选课");
         fragmentTransaction = fragmentManager.beginTransaction();
         if (chosenClassesFragment == null) {
@@ -216,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void changeToPublic() {
+    private void changeToPublic(){
         toolbar.setTitle("选课");
         fragmentTransaction = fragmentManager.beginTransaction();
         if (publicClassFragment == null) {
@@ -226,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void changeToRecommend() {
+    private void changeToRecommend(){
         toolbar.setTitle("选课");
         fragmentTransaction = fragmentManager.beginTransaction();
         if (recommendClassFragment == null) {
@@ -236,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void changeToSports() {
+    private void changeToSports(){
         toolbar.setTitle("选课");
         fragmentTransaction = fragmentManager.beginTransaction();
         if (sportsClassFragment == null) {
@@ -276,8 +265,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void startInfo() {
-        Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+    private void startInfo(){
+        Intent intent = new Intent(MainActivity.this,InfoActivity.class);
         startActivity(intent);
     }
 
@@ -290,27 +279,19 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.classTable:
                         navigationView.getMenu().findItem(R.id.examTime).setChecked(false);
                         navigationView.getMenu().findItem(R.id.scores).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.task).setChecked(false);
                         changeToClass();
                         break;
                     case R.id.examTime:
                         navigationView.getMenu().findItem(R.id.classTable).setChecked(false);
                         navigationView.getMenu().findItem(R.id.scores).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.task).setChecked(false);
                         changeToExam();
                         break;
                     case R.id.scores:
                         navigationView.getMenu().findItem(R.id.examTime).setChecked(false);
                         navigationView.getMenu().findItem(R.id.classTable).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.task).setChecked(false);
                         changeToScore();
                         break;
-                    case R.id.task:
-                        navigationView.getMenu().findItem(R.id.examTime).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.classTable).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.scores).setChecked(false);
-                        changeToTask();
-                        break;
+
                     case R.id.choosingState:
                         navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.sportsClass).setChecked(false);

@@ -23,16 +23,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import org.jsoup.nodes.Document;
-
-import java.util.List;
-
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by wangh on 2016/8/4.
@@ -51,7 +43,7 @@ public class LoginFragment extends Fragment {
     private String pas;
     private String cod;
     private SharedPreferences sharedPreferences;
-    private HttpRequester httpRequester = new HttpRequester();
+    private HttpRequester httpRequester=new HttpRequester();
 //    public static int updated=0;
 
     private CoordinatorLayout coordinatorLayout;
@@ -60,8 +52,6 @@ public class LoginFragment extends Fragment {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-
-    private BmobQuery<User> user = new BmobQuery<>();//用于查询当前登陆的账户是否已经在后端有相关的数据
 
     private Handler handle = new Handler() {
         @Override
@@ -84,19 +74,19 @@ public class LoginFragment extends Fragment {
                             editor.putString("id", usr);
                             editor.putString("name", name);
                             editor.putBoolean("isLogin", true);
-                            if (rememberPas.isChecked()) {
-                                editor.putBoolean("remPas", true);
-                                editor.putString("pas", pas);
-                            } else {
-                                editor.putBoolean("remPas", false);
+                            if(rememberPas.isChecked()){
+                                editor.putBoolean("remPas",true);
+                                editor.putString("pas",pas);
+                            }else{
+                                editor.putBoolean("remPas",false);
                             }
                             notifyAll();
                             editor.commit();
-                            Snackbar.make(coordinatorLayout, "登录成功！" + name + "。正在更新数据", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(coordinatorLayout, "登录成功！" + name+"。正在更新数据", Snackbar.LENGTH_SHORT).show();
                         }
                         DataManager.setIsGetNowScore(isGetNowScore.isChecked());
-                        Log.d("isGetNowScore", "" + isGetNowScore.isChecked());
-                        DataManager dataManager = new DataManager(getContext());
+                        Log.d("isGetNowScore",""+isGetNowScore.isChecked());
+                        DataManager dataManager=new DataManager(getContext());
 //                        updated=0;
                         dataManager.updateInfo();
                         dataManager.updateClassTable();
@@ -136,10 +126,10 @@ public class LoginFragment extends Fragment {
         });
 
         sharedPreferences = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
-        if (sharedPreferences.getBoolean("isLogin", false)) {
-            username.getEditText().setText(sharedPreferences.getString("id", ""));
-            if (sharedPreferences.getBoolean("remPas", false)) {
-                password.getEditText().setText(sharedPreferences.getString("pas", ""));
+        if(sharedPreferences.getBoolean("isLogin",false)){
+            username.getEditText().setText(sharedPreferences.getString("id",""));
+            if(sharedPreferences.getBoolean("remPas",false)){
+                password.getEditText().setText(sharedPreferences.getString("pas",""));
                 rememberPas.setChecked(true);
             }
         }
@@ -176,9 +166,9 @@ public class LoginFragment extends Fragment {
 //                                                + "&captchaField=" + cod
 //                                                + "&goto=http://my.tjut.edu.cn/loginSuccess.portal" +
 //                                                "&gotoOnFail=http://my.tjut.edu.cn/loginFailure.portal");
-                                httpRequester.post("http://ssfw.tjut.edu.cn/ssfw/j_spring_ids_security_check", "j_username=" + usr
-                                        + "&j_password=" + pas
-                                        + "&validateCode=" + cod, false);
+                                httpRequester.post("http://ssfw.tjut.edu.cn/ssfw/j_spring_ids_security_check","j_username="+usr
+                                +"&j_password="+pas
+                                +"&validateCode="+cod,false);
                                 //Document doc = httpRequester.get("http://my.tjut.edu.cn/");
                                 Document doc = httpRequester.get("http://ssfw.tjut.edu.cn/ssfw/index.do");
                                 Message msg = new Message();
@@ -200,37 +190,6 @@ public class LoginFragment extends Fragment {
             username.setErrorEnabled(true);
             username.setError("请输入学号");
         }
-
-        final String id = sharedPreferences.getString("id", null);
-        Log.d("id", "login: "+id);
-        if (id == null) {
-            Toast.makeText(getActivity(), "请重新登录后重试", Toast.LENGTH_SHORT).show();
-        } else {
-
-            user.addWhereEqualTo("userName", id).findObjects(new FindListener<User>() {
-                @Override
-                public void done(List<User> list, BmobException e) {
-                    if (e == null && list != null) {
-                        User user = new User();
-                        user.setUserName(id);
-                        user.setPoints(0);
-                        user.save(new SaveListener<String>() {
-                            @Override
-                            public void done(String s, BmobException e) {
-                                if (e == null) {
-//                                    Toast.makeText(getActivity(), "添加完成", Toast.LENGTH_SHORT).show();
-                                    Log.d("adduser", "done: 添加完成");
-                                } else {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-        }
-
-
     }
 
     private void getUrlImage() {
@@ -252,13 +211,13 @@ public class LoginFragment extends Fragment {
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
-    private void changeToMe() {
-        fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        if (meFragment == null) {
-            meFragment = new MeFragment();
+    private void changeToMe(){
+        fragmentManager=getActivity().getSupportFragmentManager();
+        fragmentTransaction=fragmentManager.beginTransaction();
+        if(meFragment==null){
+            meFragment=new MeFragment();
         }
-        fragmentTransaction.replace(getId(), meFragment);
+        fragmentTransaction.replace(getId(),meFragment);
         fragmentTransaction.commit();
     }
 }
