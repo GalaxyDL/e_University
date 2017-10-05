@@ -677,13 +677,13 @@ public class DataManager {
 
             aClassItem = new ClassItem();
 
-            aClassItem.setTitle(titleAndId[0]);
+            aClassItem.setClassTitle(titleAndId[0]);
             aClassItem.setTeacher(allInfo[1]);
-            aClassItem.setLocation(allInfo[2].replace(" </td>", ""));
+            aClassItem.setClassLocation(allInfo[2].replace(" </td>", ""));
             aClassItem.setClassNumber(Integer.parseInt(titleAndId[1]));
             aClassItem.setTimeStart(i);
             aClassItem.setTimeEnd(i + classLanght - 1);
-            aClassItem.setTime(ClassInfoConst.CLASS_START_TIME[i - 1] + "-" + ClassInfoConst.CLASS_END_TIME[i + classLanght - 2]);
+            aClassItem.setClassTime(ClassInfoConst.CLASS_START_TIME[i - 1] + "-" + ClassInfoConst.CLASS_END_TIME[i + classLanght - 2]);
             aClassItem.setWeekStart(Integer.parseInt(whichWeek[0].split("-", 2)[0]));
             aClassItem.setWeekEnd(Integer.parseInt(whichWeek[0].split("-", 2)[1]));
             aClassItem.setDate(date);
@@ -701,7 +701,7 @@ public class DataManager {
 
             boolean found = false;
             for (int j = 0; j < classTitles.size(); j++) {
-                if (aClassItem.getTitle().equals(classTitles.get(j))) {
+                if (aClassItem.getClassTitle().equals(classTitles.get(j))) {
                     found = true;
                     aClassItem.setColorID(classColors.get(j));
                 }
@@ -710,7 +710,7 @@ public class DataManager {
                 aClassItem.setColorID(classCount);
                 classColors.add(classCount);
                 classCount++;
-                classTitles.add(aClassItem.getTitle());
+                classTitles.add(aClassItem.getClassTitle());
             }
             Log.d("got class", aClassItem.toString());
             databaseManager.addClass(aClassItem);

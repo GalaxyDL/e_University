@@ -31,9 +31,9 @@ public class DatabaseManager {
         db.beginTransaction();
         try {
             ContentValues values =new ContentValues();
-            values.put("classTitle",classItem.getTitle());
-            values.put("classLocation",classItem.getLocation());
-            values.put("classTime",classItem.getTime());
+            values.put("classTitle",classItem.getClassTitle());
+            values.put("classLocation",classItem.getClassLocation());
+            values.put("classTime",classItem.getClassTime());
             values.put("teacher",classItem.getTeacher());
             values.put("weekStart",classItem.getWeekStart());
             values.put("weekEnd",classItem.getWeekEnd());
