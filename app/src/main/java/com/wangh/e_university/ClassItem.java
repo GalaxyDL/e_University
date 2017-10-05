@@ -8,7 +8,10 @@ import java.io.Serializable;
 /**
  * Created by wangh on 2016/8/3.
  */
-public class ClassItem extends BaseScheduleItem implements Cloneable {
+public class ClassItem implements Cloneable,Serializable{
+    private String classTitle;
+    private String classLocation;
+    private String classTime;
     private String teacher;
     private int weekStart;
     private int weekEnd;
@@ -17,18 +20,26 @@ public class ClassItem extends BaseScheduleItem implements Cloneable {
     private int timeStart;
     private int timeEnd;
     private int classNumber;
-
+    private int date;
+    private int day;
+    private int month;
+    private int colorID;
+    private boolean isDate=false;
+    private boolean isPassed;
+    private boolean isToday;
 
     public ClassItem(int date, int day ,int month, boolean isToday) {
-        setDay(day);
-        setDate(date);
-        setMonth(month);
-        setToday(isToday);
-        setDate(true);
+        this.day = day;
+        this.date = date;
+        this.month = month;
+        this.isToday = isToday;
+        isDate=true;
     }
 
     public ClassItem(String classTitle, String classLocation, String classTime, String teacher, int weekStart, int weekEnd, int singleWeek, int doubleWeek, int timeStart, int timeEnd, int classNumber, int date, int colorID) {
-        super(classTitle,classTime,classLocation);
+        this.classTitle = classTitle;
+        this.classLocation = classLocation;
+        this.classTime = classTime;
         this.teacher = teacher;
         this.weekStart = weekStart;
         this.weekEnd = weekEnd;
@@ -37,18 +48,36 @@ public class ClassItem extends BaseScheduleItem implements Cloneable {
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.classNumber = classNumber;
-        setDate(date);
-        setColorID(colorID);
-        setDate(false);
+        this.date = date;
+        this.colorID = colorID;
+        isDate=false;
     }
 
     public ClassItem(String classTitle, String classLocation, String classTime) {
-        super(classTitle,classTime,classLocation);
-        setDate(false);
+        this.classTitle = classTitle;
+        this.classLocation = classLocation;
+        this.classTime = classTime;
+        isDate=false;
     }
 
     public ClassItem(){
 
+    }
+
+    public boolean isDate() {
+        return isDate;
+    }
+
+    public void setDate(boolean date) {
+        isDate = date;
+    }
+
+    public void setClassTime(String classTime) {
+        this.classTime = classTime;
+    }
+
+    public void setClassLocation(String classLocation) {
+        this.classLocation = classLocation;
     }
 
     public void setTeacher(String teacher) {
@@ -80,6 +109,36 @@ public class ClassItem extends BaseScheduleItem implements Cloneable {
     }
 
     public void setClassNumber(int classNumber) { this.classNumber = classNumber; }
+
+    public void setClassTitle(String classTitle) {
+        this.classTitle = classTitle;
+    }
+
+    public void setDate(int date) { this.date = date; }
+
+    public void setColorID(int colorID) {
+        this.colorID = colorID;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public String getClassTitle() {
+        return classTitle;
+    }
+
+    public String getClassTime() {
+        return classTime;
+    }
+
+    public String getClassLocation() {
+        return classLocation;
+    }
 
     public int getWeekStart() {
         return weekStart;
@@ -113,12 +172,34 @@ public class ClassItem extends BaseScheduleItem implements Cloneable {
         return classNumber;
     }
 
+    public int getDate() {return date;}
+
+    public int getColorID() {
+        return colorID;
+    }
+
+    public boolean isPassed() {
+        return isPassed;
+    }
+
+    public void setPassed(boolean passed) {
+        isPassed = passed;
+    }
+
+    public boolean isToday() {
+        return isToday;
+    }
+
+    public void setToday(boolean today) {
+        isToday = today;
+    }
+
     @Override
     public String toString() {
         return "ClassItem{" +
-                "classTitle='" + getTitle() + '\'' +
-                ", classLocation='" + getLocation() + '\'' +
-                ", classTime='" + getTime() + '\'' +
+                "classTitle='" + classTitle + '\'' +
+                ", classLocation='" + classLocation + '\'' +
+                ", classTime='" + classTime + '\'' +
                 ", teacher='" + teacher + '\'' +
                 ", weekStart=" + weekStart +
                 ", weekEnd=" + weekEnd +
@@ -127,12 +208,12 @@ public class ClassItem extends BaseScheduleItem implements Cloneable {
                 ", timeStart=" + timeStart +
                 ", timeEnd=" + timeEnd +
                 ", classNumber=" + classNumber +
-                ", date=" + getDate() +
-                ", day=" + getDay() +
-                ", month=" + getMonth() +
-                ", colorID=" + getColorID() +
-                ", isDate=" + getDate() +
-                ", isPassed=" + isPassed() +
+                ", date=" + date +
+                ", day=" + day +
+                ", month=" + month +
+                ", colorID=" + colorID +
+                ", isDate=" + isDate +
+                ", isPassed=" + isPassed +
                 '}';
     }
 

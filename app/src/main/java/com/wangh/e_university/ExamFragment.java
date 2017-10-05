@@ -33,7 +33,7 @@ public class ExamFragment extends Fragment {
         ArrayList<ClassItem> classes = (ArrayList<ClassItem>) databaseManager.queryClass();
         for(ExamItem aExam:exams){
             for (ClassItem aClass:classes){
-                if(aClass.getTitle().equals(aExam.getTitle())){
+                if(aClass.getClassTitle().equals(aExam.getTitle())){
                     aExam.setColorID(aClass.getColorID());
                 }
             }

@@ -26,11 +26,11 @@ public class ClassActivity extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private View rootView;
 
-    private BaseScheduleItem classItem;
+    private ClassItem classItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    classItem=(BaseScheduleItem) getIntent().getSerializableExtra("class");
+    classItem=(ClassItem) getIntent().getSerializableExtra("class");
         switch (classItem.getColorID()){
             case 0:setTheme(R.style.Color0); break;
             case 1:setTheme(R.style.Color1); break;
@@ -137,14 +137,10 @@ public class ClassActivity extends AppCompatActivity {
     }
 
     private void textAppear(){
-        if(classItem.isExam()){
-            infoAdapter.addInfo(new InfoItem(classItem.getTime(),"考试时间"));
-        }else{
-            infoAdapter.addInfo(new InfoItem(classItem.getTime(),"上课时间"));
-            infoAdapter.addInfo(new InfoItem(((ClassItem)classItem).getTeacher(),"老师"));
-        }
-        infoAdapter.addInfo(new InfoItem(classItem.getLocation(),"地点"));
-        collapsingToolbarLayout.setTitle(classItem.getTitle());
+        infoAdapter.addInfo(new InfoItem(classItem.getClassTime(),"上课时间"));
+        infoAdapter.addInfo(new InfoItem(classItem.getTeacher(),"老师"));
+        infoAdapter.addInfo(new InfoItem(classItem.getClassLocation(),"地点"));
+        collapsingToolbarLayout.setTitle(classItem.getClassTitle());
 
         recyclerView.setAdapter(infoAdapter);
         toolbar.setTitleTextColor(Color.WHITE);
