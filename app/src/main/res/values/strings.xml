@@ -11,14 +11,18 @@
     <string name="get_now_score">查询当前学期成绩(不选中则查询上学期成绩)</string>
     <string name="get_pass_score">查询上学期成绩</string>
 
-    <string name="buttons_navigation_search">查询</string>
+    <string name="buttons_navigation_search">教务</string>
     <string name="buttons_navigation_choose">选课</string>
+    <string name="buttons_navigation_school">校园</string>
     <string name="buttons_navigation_me">个人</string>
 
-    <string name="drawer_search_title">查询</string>
+    <string name="drawer_search_title">教务助手</string>
     <string name="drawer_search_class">课程表</string>
     <string name="drawer_search_exam">考试时间</string>
     <string name="drawer_search_score">考试成绩</string>
+
+    <string name="drawer_school_title">校园生活</string>
+    <string name="drawer_school_task">任务活动</string>
 
     <string name="drawer_choose_title">选课</string>
     <string name="drawer_choose_chosen">已选课程</string>

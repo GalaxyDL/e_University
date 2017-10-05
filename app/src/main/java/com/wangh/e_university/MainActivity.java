@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ClassFragment classFragment;
     private ExamFragment examFragment;
     private ScoreFragment scoreFragment;
+    private TaskFragment taskFragment;
     private LoginFragment loginFragment;
     private MeFragment meFragment;
     private ChoosingIndexFragment choosingIndexFragment;
@@ -142,6 +143,11 @@ public class MainActivity extends AppCompatActivity {
                         changeToChooseIndex();
 //                        changeToChooseNotTime();
                         break;
+                    case R.id.school:
+                        navigationView.getMenu().clear();
+                        navigationView.inflateMenu(R.menu.navigation_darwer_school);
+                        changeToTask();
+                        break;
                     case R.id.me:
                         navigationView.getMenu().clear();
                         navigationView.inflateMenu(R.menu.navigation_darwer_me);
@@ -182,6 +188,16 @@ public class MainActivity extends AppCompatActivity {
             scoreFragment = new ScoreFragment();
         }
         fragmentTransaction.replace(R.id.frameLayout, scoreFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void changeToTask() {
+        toolbar.setTitle("任务");
+        fragmentTransaction = fragmentManager.beginTransaction();
+        if (taskFragment == null) {
+            taskFragment = new TaskFragment();
+        }
+        fragmentTransaction.replace(R.id.frameLayout, taskFragment);
         fragmentTransaction.commit();
     }
 
@@ -291,7 +307,9 @@ public class MainActivity extends AppCompatActivity {
                         navigationView.getMenu().findItem(R.id.classTable).setChecked(false);
                         changeToScore();
                         break;
-
+                    case R.id.task:
+                        changeToTask();
+                        break;
                     case R.id.choosingState:
                         navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
                         navigationView.getMenu().findItem(R.id.sportsClass).setChecked(false);

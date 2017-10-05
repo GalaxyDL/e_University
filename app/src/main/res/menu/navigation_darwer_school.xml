@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:title="@string/drawer_school_title">
+            <menu>
+                <item
+                    android:checked="true"
+                    android:id="@+id/task"
+                    android:icon="@drawable/calendar_clock"
+                    android:title="@string/drawer_school_task"/>
+            </menu>
+        </item>
+    </group>
+    <group>
+        <item
+            android:title="@string/drawer_info"
+            android:id="@+id/infoSchool"
+            android:icon="@drawable/information"
+            />
+    </group>
+
+</menu>

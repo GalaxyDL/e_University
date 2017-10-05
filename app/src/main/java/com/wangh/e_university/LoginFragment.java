@@ -23,8 +23,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import org.jsoup.nodes.Document;
+
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by wangh on 2016/8/4.
@@ -52,6 +60,8 @@ public class LoginFragment extends Fragment {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+
+    private BmobQuery<User> user = new BmobQuery<>();//用于查询当前登陆的账户是否已经在后端有相关的数据
 
     private Handler handle = new Handler() {
         @Override
@@ -189,6 +199,34 @@ public class LoginFragment extends Fragment {
         } else {
             username.setErrorEnabled(true);
             username.setError("请输入学号");
+        }
+        final String id = sharedPreferences.getString("id", null);
+        Log.d("id", "login: "+id);
+        if (id == null) {
+            Toast.makeText(getActivity(), "请重新登录后重试", Toast.LENGTH_SHORT).show();
+        } else {
+
+            user.addWhereEqualTo("userName", id).findObjects(new FindListener<User>() {
+                @Override
+                public void done(List<User> list, BmobException e) {
+                    if (e == null && list != null) {
+                        User user = new User();
+                        user.setUserName(id);
+                        user.setPoints(0);
+                        user.save(new SaveListener<String>() {
+                            @Override
+                            public void done(String s, BmobException e) {
+                                if (e == null) {
+//                                    Toast.makeText(getActivity(), "添加完成", Toast.LENGTH_SHORT).show();
+                                    Log.d("adduser", "done: 添加完成");
+                                } else {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
         }
     }
 

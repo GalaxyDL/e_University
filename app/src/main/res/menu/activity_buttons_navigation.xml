@@ -2,12 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/search"
-        android:icon="@drawable/magnify"
+        android:icon="@drawable/clipboard_text"
         android:title="@string/buttons_navigation_search" />
     <item
         android:id="@+id/choose"
         android:icon="@drawable/book_multiple"
         android:title="@string/buttons_navigation_choose" />
+    <item
+        android:id="@+id/school"
+        android:icon="@drawable/school"
+        android:title="@string/buttons_navigation_school" />
     <item
         android:id="@+id/me"
         android:icon="@drawable/account"
