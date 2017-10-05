@@ -13,6 +13,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -550,7 +551,7 @@ public class DataManager {
 
     private void doUpdateScore(Document doc) {
         databaseManager = new DatabaseManager(context);
-        Element table = doc.getElementsByTag("tbody").get(8);
+        Element table = doc.getElementsByTag("tbody").get(7);
         if (table != null) {
             databaseManager.deleteAllScore();
             databaseManager.deleteAverageCredit();
@@ -561,14 +562,20 @@ public class DataManager {
 //        Log.d("score",table.toString());
             if (table.child(0).child(0).text().equals("暂无记录")) {
                 Log.d("doUpdateScore", "no score");
-            } else while (!table.children().isEmpty()) {
-                Log.d("got average credit", doc.getElementsByClass("ui_alert").first().child(0).text());
-                databaseManager.updateAverageCredit(doc.getElementsByClass("ui_alert").first().child(0).text());
-                aScoreItem = new ScoreItem();
-                aScoreItem.parseScore(table.child(0));
-                table.child(0).remove();
-                Log.d("got Score", aScoreItem.toString());
-                databaseManager.addScore(aScoreItem);
+            } else {
+                int creditSum = 0;
+                float greditSum = 0;
+                while (!table.children().isEmpty()) {
+                    aScoreItem = new ScoreItem();
+                    aScoreItem.parseScore(table.child(0));
+                    table.child(0).remove();
+                    Log.d("got Score", aScoreItem.toString());
+                    databaseManager.addScore(aScoreItem);
+                    creditSum += aScoreItem.getCredit();
+                    greditSum += getGrade(aScoreItem.getScore()) * aScoreItem.getCredit();
+                }
+                Log.d("doUpdateScore", "got average credit: " + (greditSum / creditSum));
+                databaseManager.updateAverageCredit("查询学期平均绩点：" + new DecimalFormat("#.#").format(greditSum / creditSum));
             }
         }
 
@@ -737,6 +744,30 @@ public class DataManager {
         @Override
         public void update() {
             updateCurrentNumber();
+        }
+    }
+
+    private float getGrade(double score){
+        if(score < 60){
+            return 0;
+        }else if(score < 65){
+            return 1;
+        }else if(score < 70){
+            return 1.5f;
+        }else if(score < 75){
+            return 2;
+        }else if(score < 80){
+            return 2.5f;
+        }else if(score < 85){
+            return 3;
+        }else if(score < 90){
+            return 3.5f;
+        }else if(score < 95){
+            return 4;
+        }else if(score < 100){
+            return 4.5f;
+        }else {
+            return 5;
         }
     }
 }
