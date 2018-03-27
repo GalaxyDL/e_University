@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/SeatTable/SeatTable.iml" filepath="$PROJECT_DIR$/SeatTable/SeatTable.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/e_University.iml" filepath="$PROJECT_DIR$/e_University.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/e_University.iml" filepath="$PROJECT_DIR$/.idea/e_University.iml" />
+      <module fileurl="file://C:\Users\mxz\AndroidStudioProjects\e_University\e_University.iml" filepath="C:\Users\mxz\AndroidStudioProjects\e_University\e_University.iml" />
     </modules>
   </component>
 </project>

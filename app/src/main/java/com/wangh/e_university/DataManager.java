@@ -204,7 +204,9 @@ public class DataManager {
                         result.setGrade(list.get(count + 5).toString().split("'")[3]);
                         result.setClasses(list.get(count + 7).toString().split("'")[3]);
                         result.setDepartment(ClassInfoConst.CLASS_DEPARTMENT.get(list.get(count + 9).toString().split("'")[3]));
+                        Log.d("doGetChoosingInfo: ", list.get(count + 9).toString().split("'")[3] + ".");
                         result.setMajor(ClassInfoConst.MAJOR.get(list.get(count + 11).toString().split("'")[3]));
+                        Log.d("doGetChoosingInfo: ", list.get(count + 11).toString().split("'")[3] + ".");
                         result.setStdID(list.get(count + 17).toString().split("'")[3]);
                         result.setName(list.get(count + 21).toString().split("'")[3]);
                         result.setDegree(list.get(count + 29).toString().split("'")[3]);
@@ -251,7 +253,7 @@ public class DataManager {
     }
 
     private void doUpdateInfo(Document doc) {
-        sharedPreferences = context.getSharedPreferences("account", Context.MODE_APPEND);
+        sharedPreferences = context.getSharedPreferences("account", Context.MODE_PRIVATE);
         Element element = doc.getElementById("yxdm");
         SharedPreferences.Editor editor = sharedPreferences.edit();
 //        Log.d("doUpdateInfo",CLASS_DEPARTMENT.get(element.val()));
@@ -551,7 +553,7 @@ public class DataManager {
 
     private void doUpdateScore(Document doc) {
         databaseManager = new DatabaseManager(context);
-        Element table = doc.getElementsByTag("tbody").get(7);
+        Element table = doc.getElementsByTag("tbody").get(8);
         if (table != null) {
             databaseManager.deleteAllScore();
             databaseManager.deleteAverageCredit();

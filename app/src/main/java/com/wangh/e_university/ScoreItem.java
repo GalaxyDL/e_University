@@ -45,9 +45,9 @@ public class ScoreItem {
     }
 
     public void parseScore(Element score){
-        title=score.child(3).text();
-        credit=Double.parseDouble(score.child(7).text().replace("\n", "").replace(" ", ""));
-        this.score=Double.parseDouble(score.child(8).child(0).child(0).text().replace("&nbsp;", "").replace("\n", "").replace(" ", ""));
+        title = score.child(4).text();
+        credit = Double.parseDouble(score.child(8).text().replace("\n", "").replace(" ", ""));
+        this.score = Double.parseDouble(score.child(9).child(0).child(0).text().replace("&nbsp;", "").replace("\n", "").replace(" ", ""));
     }
 
     @Override

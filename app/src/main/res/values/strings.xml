@@ -23,6 +23,8 @@
 
     <string name="drawer_school_title">校园生活</string>
     <string name="drawer_school_task">任务活动</string>
+    <string name="drawer_school_library">图书馆座位预定</string>
+    <string name="drawer_school_lostPorerity">失物招领</string>
 
     <string name="drawer_choose_title">选课</string>
     <string name="drawer_choose_chosen">已选课程</string>
@@ -53,5 +55,21 @@
     <string name="choose">选课</string>
     <string name="now">当前选课人数：</string>
     <string name="limit">课堂容量：</string>
+
+    <string name="lost_title">丢失物品名</string>
+    <string name="lost_phone">您的手机号</string>
+    <string name="lost_description">丢失物品描述</string>
+    <string name="lost_photo">丢失物品照片</string>
+    <string name="lost_take_photo">拍照上传</string>
+    <string name="lost_pick_photo">从相册中上传</string>
+    <string name="lost_no_photo">无照片</string>
+    <string name="lost_lost">我要找失物</string>
+    <string name="lost_found">我要找失主</string>
+    <string name="lost_submit">提交</string>
+
+    <string name="lost_property_lost">【失物】</string>
+    <string name="lost_property_found">【招领】</string>
+    <string name="lost_property_delete">删除</string>
+
 
 </resources>

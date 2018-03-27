@@ -9,6 +9,14 @@
                     android:id="@+id/task"
                     android:icon="@drawable/calendar_clock"
                     android:title="@string/drawer_school_task"/>
+                <item
+                    android:id="@+id/library"
+                    android:icon="@drawable/library"
+                    android:title="@string/drawer_school_library" />
+                <item
+                    android:id="@+id/lostPorerity"
+                    android:icon="@drawable/ic_search_24dp"
+                    android:title="@string/drawer_school_lostPorerity" />
             </menu>
         </item>
     </group>

@@ -42,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private ClassFragment classFragment;
     private ExamFragment examFragment;
     private ScoreFragment scoreFragment;
+    private RoomFragment roomFragment;
     private TaskFragment taskFragment;
+    private LostPropertyFragment lostPropertyFragment;
     private LoginFragment loginFragment;
     private MeFragment meFragment;
     private ChoosingIndexFragment choosingIndexFragment;
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         BmobUpdateAgent.update(this);
 
-        sharedPreferences = getSharedPreferences("account", MODE_APPEND);
+        sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if (!sharedPreferences.getBoolean("isLogin", true)) {
             editor.putBoolean("isLogin", false);
@@ -198,6 +200,26 @@ public class MainActivity extends AppCompatActivity {
             taskFragment = new TaskFragment();
         }
         fragmentTransaction.replace(R.id.frameLayout, taskFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void changeToLost() {
+        toolbar.setTitle("失物招领");
+        fragmentTransaction = fragmentManager.beginTransaction();
+        if (lostPropertyFragment == null) {
+            lostPropertyFragment = new LostPropertyFragment();
+        }
+        fragmentTransaction.replace(R.id.frameLayout, lostPropertyFragment);
+        fragmentTransaction.commit();
+    }
+
+    private void changeToRoom() {
+        toolbar.setTitle("图书馆座位预定");
+        fragmentTransaction = fragmentManager.beginTransaction();
+        if (roomFragment == null) {
+            roomFragment = new RoomFragment();
+        }
+        fragmentTransaction.replace(R.id.frameLayout, roomFragment);
         fragmentTransaction.commit();
     }
 
@@ -309,6 +331,18 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.task:
                         changeToTask();
+                        navigationView.getMenu().findItem(R.id.library).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.lostPorerity).setChecked(false);
+                        break;
+                    case R.id.library:
+                        changeToRoom();
+                        navigationView.getMenu().findItem(R.id.task).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.lostPorerity).setChecked(false);
+                        break;
+                    case R.id.lostPorerity:
+                        changeToLost();
+                        navigationView.getMenu().findItem(R.id.library).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.task).setChecked(false);
                         break;
                     case R.id.choosingState:
                         navigationView.getMenu().findItem(R.id.publicClass).setChecked(false);
